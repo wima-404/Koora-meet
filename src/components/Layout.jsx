@@ -67,6 +67,19 @@ export default function Layout() {
                 <Link to="/profile" className={`p-2 rounded-full ${location.pathname === '/profile' ? 'text-red-500' : 'text-gray-400'}`}><User size={24} /></Link>
             </nav>
 
+            {/* --- Floating AI Chatbot Button (Desktop) --- */}
+            <Link
+                to="/chatbot"
+                className="hidden lg:flex fixed bottom-8 right-8 bg-black/50 backdrop-blur-md border border-red-500/50 text-white px-4 py-3 rounded-full shadow-2xl hover:scale-105 transition-transform z-50 items-center gap-2 group"
+            >
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="font-bold pr-1">Koora AI</span>
+                <MessageCircle size={20} className="text-red-500" />
+                <div className="absolute -top-12 right-0 bg-white text-black text-xs font-bold px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Need help? Ask AI!
+                </div>
+            </Link>
+
         </div>
     );
 }
