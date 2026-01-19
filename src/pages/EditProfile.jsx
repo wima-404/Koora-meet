@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../services/storage';
 import { Button, Input } from '../components/UI';
-import { ArrowLeft, Save, User, MapPin, Flag, Globe } from 'lucide-react';
+import { ArrowLeft, Save, User, MapPin, Flag, Globe, Camera } from 'lucide-react';
 
 export default function EditProfile() {
     const navigate = useNavigate();
@@ -14,7 +14,8 @@ export default function EditProfile() {
         ville: user?.ville || '',
         equipe: user?.equipe || 'Maroc',
         emplacement: user?.emplacement || 'Au Maroc',
-        bio: user?.bio || 'Supporter passionné ⚽'
+        bio: user?.bio || 'Supporter passionné ⚽',
+        photo: user?.photo || ''
     });
 
     const handleSubmit = (e) => {
