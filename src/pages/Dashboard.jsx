@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AuthService } from '../services/storage';
 import { Button } from '../components/UI';
-import { Calendar, MapPin, Users, Flame, ChevronRight, Bell } from 'lucide-react';
+import { Calendar, Users, Flame, ChevronRight, Bell, Plus, Hash } from 'lucide-react';
 
 export default function Dashboard() {
     const user = AuthService.getCurrentUser();
@@ -13,69 +13,76 @@ export default function Dashboard() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             borderRadius: 'var(--radius-xl)',
-            padding: '2rem',
+            padding: '2.5rem',
             color: 'white',
             marginBottom: '2rem',
             position: 'relative',
             overflow: 'hidden',
-            border: '1px solid var(--border-color)'
+            border: '1px solid var(--border-color)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
         }}>
             <div className="flex justify-between items-start mb-8">
-                <div className="bg-red-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    Next Match
+                <div className="bg-red-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/20">
+                    LIVE NOW
                 </div>
-                <div className="bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1">
-                    <Calendar size={12} /> Tomorrow, 20:00
+                <div className="bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1 border border-white/10">
+                    <Calendar size={12} /> Today, 20:00 UTC+1
                 </div>
             </div>
 
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h2 className="text-3xl font-black mb-1">MOROCCO</h2>
+                    <h2 className="text-4xl font-black mb-1">MAR</h2>
                     <div className="text-sm opacity-75">Atlas Lions</div>
                 </div>
-                <div className="text-4xl font-black opacity-50">VS</div>
+                <div className="flex flex-col items-center">
+                    <div className="text-4xl font-black">2 - 1</div>
+                    <div className="text-xs font-bold text-red-500 bg-black/50 px-2 rounded mt-1">65'</div>
+                </div>
                 <div className="text-right">
-                    <h2 className="text-3xl font-black mb-1">PORTUGAL</h2>
+                    <h2 className="text-4xl font-black mb-1">POR</h2>
                     <div className="text-sm opacity-75">Seleção</div>
                 </div>
             </div>
 
             <div className="flex gap-3">
                 <Button variant="primary" style={{ width: 'auto', padding: '0.75rem 1.5rem' }}>
-                    View Squad
+                    Watch Stream
                 </Button>
-                <button className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors font-bold text-sm">
-                    Stats
+                <button className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors font-bold text-sm border border-white/5">
+                    Match Stats
                 </button>
             </div>
         </div>
     );
 
     const QuickAction = ({ icon: Icon, title, desc, color }) => (
-        <div className="card hover:border-red-500/50 transition-colors cursor-pointer group">
-            <div className={`p-3 rounded-full w-fit mb-4 ${color} bg-opacity-20`}>
-                <Icon size={24} className={color.replace('bg-', 'text-')} />
+        <div className="card hover:border-red-500/50 transition-colors cursor-pointer group h-full flex flex-col justify-between">
+            <div>
+                <div className={`p-3 rounded-full w-fit mb-4 ${color} bg-opacity-20`}>
+                    <Icon size={24} className={color.replace('bg-', 'text-')} />
+                </div>
+                <h3 className="text-xl font-bold mb-1">{title}</h3>
+                <p className="text-sm text-gray-500 mb-4">{desc}</p>
             </div>
-            <h3 className="text-lg font-bold mb-1">{title}</h3>
-            <p className="text-sm text-gray-500 mb-4">{desc}</p>
-            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-red-500 transition-colors">
-                <ChevronRight size={16} />
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-red-500 transition-colors ml-auto">
+                <ChevronRight size={20} />
             </div>
         </div>
     );
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 pb-20 pt-4">
+        <div className="flex flex-col lg:flex-row gap-8 pb-20 pt-8 lg:pt-12">
             {/* Main Content */}
             <div className="flex-1">
                 <header className="flex justify-between items-center mb-8">
                     <div>
-                        <h1 className="text-3xl mb-1">Welcome back, {user?.prenom}! 👋</h1>
+                        <h1 className="text-3xl font-black mb-1">Welcome back, {user?.prenom}! 🦁</h1>
                         <p className="text-gray-400">Ready for the next match?</p>
                     </div>
-                    <button className="p-3 bg-white/5 rounded-full hover:bg-white/10">
+                    <button className="p-3 bg-white/5 rounded-full hover:bg-white/10 border border-white/5 transition-colors relative">
                         <Bell size={24} />
+                        <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
                 </header>
 
@@ -93,57 +100,121 @@ export default function Dashboard() {
                     <Link to="/groups">
                         <QuickAction
                             icon={Users}
-                            title="Find a Community"
-                            desc="Join local fans near you."
-                            color="bg-blue-500"
+                            title="Find a Meetup"
+                            desc="Join local fans in Casablanca."
+                            color="bg-red-600"
                         />
                     </Link>
                 </div>
 
-                <h3 className="text-xl font-bold mb-4">Community Feed</h3>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-bold">Community Feed</h3>
+                    <span className="text-sm text-red-500 cursor-pointer hover:underline">+ New Post</span>
+                </div>
+
                 {/* Feed Post Mockup */}
-                <div className="card">
+                <div className="card hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-gray-700 rounded-full overflow-hidden">
+                        <div className="w-12 h-12 bg-gray-700 rounded-full overflow-hidden border-2 border-red-900">
                             <img src="https://i.pravatar.cc/150?img=11" alt="User" />
                         </div>
                         <div>
                             <div className="font-bold">Hassan Break</div>
-                            <div className="text-xs text-gray-500">2 hours ago • Rabat</div>
+                            <div className="text-xs text-gray-500">2 hours ago • Rabat, Fan Zone</div>
                         </div>
                     </div>
-                    <p className="mb-4 text-gray-300">
-                        Anyone heading to the fan zone tonight? predictions are wild for the match! 🔥🇲🇦
+                    <p className="mb-4 text-gray-300 text-lg">
+                        Anyone heading to the fan zone tonight? The atmosphere is electric! Predictions for tonight? 🔥🇲🇦
                     </p>
-                    <div className="flex gap-4 text-sm text-gray-500 border-t border-white/5 pt-4">
-                        <span className="flex items-center gap-1 hover:text-red-500 cursor-pointer">❤️ 245</span>
-                        <span className="flex items-center gap-1 hover:text-blue-500 cursor-pointer">💬 18 Comments</span>
+                    <div className="h-48 w-full rounded-xl bg-gray-800 mb-4 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?w=800&q=80" className="object-cover w-full h-full opacity-60 hover:scale-105 transition-transform duration-500" alt="Fan Zone" />
+                    </div>
+                    <div className="flex gap-6 text-sm text-gray-400 border-t border-white/5 pt-4">
+                        <button className="flex items-center gap-2 hover:text-red-500 transition-colors"><Flame size={18} /> 245 Hype</button>
+                        <button className="flex items-center gap-2 hover:text-blue-500 transition-colors"><Hash size={18} /> 18 Comments</button>
                     </div>
                 </div>
             </div>
 
-            {/* Right Sidebar (Desktop only usually, but responsive checks apply) */}
-            <div className="hidden lg:block w-[350px]">
-                <div className="card sticky top-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-bold">Upcoming Matches</h3>
-                        <span className="text-xs text-red-500 cursor-pointer">View All</span>
-                    </div>
+            {/* Right Sidebar (Desktop only) */}
+            <div className="hidden lg:flex flex-col w-[320px] gap-6 sticky top-8 h-fit">
 
-                    {/* Mini Match Item */}
-                    <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg mb-2">
-                        <div className="flex items-center gap-2">
-                            <span>🇫🇷</span>
-                            <span className="font-bold">FRA</span>
+                {/* Upcoming Matches */}
+                <div className="card p-0 overflow-hidden">
+                    <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
+                        <h3 className="font-bold">Upcoming Matches</h3>
+                        <span className="text-xs text-red-500 cursor-pointer">See All</span>
+                    </div>
+                    <div className="p-4 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <span className="text-2xl">🇫🇷</span>
+                                <div className="flex flex-col">
+                                    <span className="font-bold text-sm">France</span>
+                                    <span className="text-[10px] text-gray-500">VS Brazil</span>
+                                </div>
+                            </div>
+                            <span className="text-xs font-bold bg-green-500/20 text-green-500 px-2 py-1 rounded">20:00</span>
                         </div>
-                        <div className="text-xs text-gray-500">20:00</div>
-                        <div className="flex items-center gap-2">
-                            <span className="font-bold">BRA</span>
-                            <span>🇧🇷</span>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <span className="text-2xl">🇪🇸</span>
+                                <div className="flex flex-col">
+                                    <span className="font-bold text-sm">Spain</span>
+                                    <span className="text-[10px] text-gray-500">VS Italy</span>
+                                </div>
+                            </div>
+                            <span className="text-xs font-bold bg-gray-700 text-gray-400 px-2 py-1 rounded">22:00</span>
                         </div>
                     </div>
                 </div>
+
+                {/* Your Squad */}
+                <div className="card p-0 overflow-hidden">
+                    <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
+                        <h3 className="font-bold">Your Squad</h3>
+                        <span className="text-xs text-red-500 cursor-pointer">+ Invite</span>
+                    </div>
+                    <div className="p-4 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden"><img src="https://i.pravatar.cc/150?img=3" alt="" /></div>
+                                <div>
+                                    <div className="font-bold text-sm">Amine M.</div>
+                                    <div className="text-[10px] text-green-500">Online</div>
+                                </div>
+                            </div>
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden"><img src="https://i.pravatar.cc/150?img=5" alt="" /></div>
+                                <div>
+                                    <div className="font-bold text-sm">Sarah K.</div>
+                                    <div className="text-[10px] text-gray-500">Offline 2h ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Trending Tags */}
+                <div className="">
+                    <h3 className="font-bold mb-3 px-1 text-gray-400 text-sm uppercase">Trending Tags</h3>
+                    <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition-colors text-xs font-bold cursor-pointer">#DimaMaghreb</span>
+                        <span className="px-3 py-1 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition-colors text-xs font-bold cursor-pointer">#WorldCup2030</span>
+                        <span className="px-3 py-1 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition-colors text-xs font-bold cursor-pointer">#Casablanca</span>
+                        <span className="px-3 py-1 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition-colors text-xs font-bold cursor-pointer">#Ultras</span>
+                    </div>
+                </div>
+
             </div>
+
+            {/* Mobile FAB Chat (Hidden on Desktop) */}
+            <button className="lg:hidden fixed bottom-24 right-4 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg text-white z-50">
+                <Hash size={20} />
+            </button>
         </div>
     );
 }
