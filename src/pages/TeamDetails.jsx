@@ -14,74 +14,74 @@ export default function TeamDetails() {
             name: 'Morocco', code: 'ma', color: 'from-red-600 to-green-900', coach: 'Walid Regragui',
             ranking: 13, titles: 0,
             starters: [
-                { name: 'Yassine Bounou', pos: 'GK', club: 'Al-Hilal' },
-                { name: 'Achraf Hakimi', pos: 'RB', club: 'PSG' },
-                { name: 'Nayef Aguerd', pos: 'CB', club: 'Real Sociedad' },
-                { name: 'Romain Saïss', pos: 'CB', club: 'Al-Sadd' },
-                { name: 'Noussair Mazraoui', pos: 'LB', club: 'Man Utd' },
-                { name: 'Sofyan Amrabat', pos: 'CDM', club: 'Fenerbahçe' },
-                { name: 'Azzedine Ounahi', pos: 'CM', club: 'Panathinaikos' },
-                { name: 'Hakim Ziyech', pos: 'RW', club: 'Galatasaray' },
-                { name: 'Brahim Díaz', pos: 'CAM', club: 'Real Madrid' },
-                { name: 'Amine Adli', pos: 'LW', club: 'Leverkusen' },
-                { name: 'Youssef En-Nesyri', pos: 'ST', club: 'Fenerbahçe' }
+                { name: 'Yassine Bounou', pos: 'GK', club: 'Al-Hilal', photo: 'https://img.a.transfermarkt.technology/portrait/big/169727-1664867405.jpg?lm=1' },
+                { name: 'Achraf Hakimi', pos: 'RB', club: 'PSG', photo: 'https://img.a.transfermarkt.technology/portrait/big/340341-1694087782.jpg?lm=1' },
+                { name: 'Nayef Aguerd', pos: 'CB', club: 'Real Sociedad', photo: 'https://img.a.transfermarkt.technology/portrait/big/294043-1694087916.jpg?lm=1' },
+                { name: 'Romain Saïss', pos: 'CB', club: 'Al-Sadd', photo: 'https://img.a.transfermarkt.technology/portrait/big/95201-1543510378.jpg?lm=1' },
+                { name: 'Noussair Mazraoui', pos: 'LB', club: 'Man Utd', photo: 'https://img.a.transfermarkt.technology/portrait/big/340263-1696586959.jpg?lm=1' },
+                { name: 'Sofyan Amrabat', pos: 'CDM', club: 'Fenerbahçe', photo: 'https://img.a.transfermarkt.technology/portrait/big/351566-1694088038.jpg?lm=1' },
+                { name: 'Azzedine Ounahi', pos: 'CM', club: 'Panathinaikos', photo: 'https://img.a.transfermarkt.technology/portrait/big/486049-1668166765.jpg?lm=1' },
+                { name: 'Hakim Ziyech', pos: 'RW', club: 'Galatasaray', photo: 'https://img.a.transfermarkt.technology/portrait/big/181415-1694087652.jpg?lm=1' },
+                { name: 'Brahim Díaz', pos: 'CAM', club: 'Real Madrid', photo: 'https://img.a.transfermarkt.technology/portrait/big/411671-1694761243.jpg?lm=1' },
+                { name: 'Amine Adli', pos: 'LW', club: 'Leverkusen', photo: 'https://img.a.transfermarkt.technology/portrait/big/605785-1725882623.jpg?lm=1' },
+                { name: 'Youssef En-Nesyri', pos: 'ST', club: 'Fenerbahçe', photo: 'https://img.a.transfermarkt.technology/portrait/big/302782-1694087996.jpg?lm=1' }
             ],
             subs: [
-                { name: 'Munir Mohamedi', pos: 'GK', club: 'Berkane' },
-                { name: 'Abdel Abqar', pos: 'CB', club: 'Alavés' },
-                { name: 'Amir Richardson', pos: 'CM', club: 'Fiorentina' },
-                { name: 'Bilal El Khanouss', pos: 'CAM', club: 'Leicester' },
-                { name: 'Eliesse Ben Seghir', pos: 'FW', club: 'Monaco' },
-                { name: 'Soufiane Rahimi', pos: 'FW', club: 'Al-Ain' },
-                { name: 'Ayoub El Kaabi', pos: 'ST', club: 'Olympiacos' }
+                { name: 'Munir Mohamedi', pos: 'GK', club: 'Berkane', photo: 'https://img.a.transfermarkt.technology/portrait/big/117146-1621843542.jpg?lm=1' },
+                { name: 'Abdel Abqar', pos: 'CB', club: 'Alavés', photo: 'https://img.a.transfermarkt.technology/portrait/big/650615-1668426992.jpg?lm=1' },
+                { name: 'Amir Richardson', pos: 'CM', club: 'Fiorentina', photo: 'https://img.a.transfermarkt.technology/portrait/big/651169-1725029060.jpg?lm=1' },
+                { name: 'Bilal El Khanouss', pos: 'CAM', club: 'Leicester', photo: 'https://img.a.transfermarkt.technology/portrait/big/675909-1725024992.jpg?lm=1' },
+                { name: 'Eliesse Ben Seghir', pos: 'FW', club: 'Monaco', photo: 'https://img.a.transfermarkt.technology/portrait/big/815093-1725029220.jpg?lm=1' },
+                { name: 'Soufiane Rahimi', pos: 'FW', club: 'Al-Ain', photo: 'https://img.a.transfermarkt.technology/portrait/big/605790-1668426832.jpg?lm=1' },
+                { name: 'Ayoub El Kaabi', pos: 'ST', club: 'Olympiacos', photo: 'https://img.a.transfermarkt.technology/portrait/big/348434-1663842144.jpg?lm=1' }
             ]
         },
         'fra': {
             name: 'France', code: 'fr', color: 'from-blue-600 to-red-600', coach: 'Didier Deschamps',
             ranking: 2, titles: 2,
             starters: [
-                { name: 'Mike Maignan', pos: 'GK', club: 'AC Milan' },
-                { name: 'Jules Koundé', pos: 'RB', club: 'Barcelona' },
-                { name: 'William Saliba', pos: 'CB', club: 'Arsenal' },
-                { name: 'Ibrahima Konaté', pos: 'CB', club: 'Liverpool' },
-                { name: 'Theo Hernández', pos: 'LB', club: 'AC Milan' },
-                { name: 'N\'Golo Kanté', pos: 'CDM', club: 'Al-Ittihad' },
-                { name: 'Aurélien Tchouaméni', pos: 'CM', club: 'Real Madrid' },
-                { name: 'Ousmane Dembélé', pos: 'RW', club: 'PSG' },
-                { name: 'Antoine Griezmann', pos: 'CAM', club: 'Atlético' },
-                { name: 'Kylian Mbappé', pos: 'LW', club: 'Real Madrid' },
-                { name: 'Marcus Thuram', pos: 'ST', club: 'Inter' }
+                { name: 'Mike Maignan', pos: 'GK', club: 'AC Milan', photo: 'https://img.a.transfermarkt.technology/portrait/big/182906-1694088144.png?lm=1' },
+                { name: 'Jules Koundé', pos: 'RB', club: 'Barcelona', photo: 'https://img.a.transfermarkt.technology/portrait/big/341678-1694088254.jpg?lm=1' },
+                { name: 'William Saliba', pos: 'CB', club: 'Arsenal', photo: 'https://img.a.transfermarkt.technology/portrait/big/495666-1694088312.jpg?lm=1' },
+                { name: 'Ibrahima Konaté', pos: 'CB', club: 'Liverpool', photo: 'https://img.a.transfermarkt.technology/portrait/big/357460-1694088378.jpg?lm=1' },
+                { name: 'Theo Hernández', pos: 'LB', club: 'AC Milan', photo: 'https://img.a.transfermarkt.technology/portrait/big/339340-1694088220.png?lm=1' },
+                { name: 'N\'Golo Kanté', pos: 'CDM', club: 'Al-Ittihad', photo: 'https://img.a.transfermarkt.technology/portrait/big/225083-1631175856.jpg?lm=1' },
+                { name: 'Aurélien Tchouaméni', pos: 'CM', club: 'Real Madrid', photo: 'https://img.a.transfermarkt.technology/portrait/big/587996-1694088449.jpg?lm=1' },
+                { name: 'Ousmane Dembélé', pos: 'RW', club: 'PSG', photo: 'https://img.a.transfermarkt.technology/portrait/big/288230-1694088488.jpg?lm=1' },
+                { name: 'Antoine Griezmann', pos: 'CAM', club: 'Atlético', photo: 'https://img.a.transfermarkt.technology/portrait/big/125781-1696586774.jpg?lm=1' },
+                { name: 'Kylian Mbappé', pos: 'LW', club: 'Real Madrid', photo: 'https://img.a.transfermarkt.technology/portrait/big/342229-1727784337.png?lm=1' },
+                { name: 'Marcus Thuram', pos: 'ST', club: 'Inter', photo: 'https://img.a.transfermarkt.technology/portrait/big/371435-1694088586.jpg?lm=1' }
             ],
             subs: [
-                { name: 'Alphonse Areola', pos: 'GK', club: 'West Ham' },
-                { name: 'Dayot Upamecano', pos: 'CB', club: 'Bayern' },
-                { name: 'Eduardo Camavinga', pos: 'CM', club: 'Real Madrid' },
-                { name: 'Bradley Barcola', pos: 'LW', club: 'PSG' },
-                { name: 'Randal Kolo Muani', pos: 'ST', club: 'PSG' }
+                { name: 'Alphonse Areola', pos: 'GK', club: 'West Ham', photo: 'https://img.a.transfermarkt.technology/portrait/big/126380-1694088639.jpg?lm=1' },
+                { name: 'Dayot Upamecano', pos: 'CB', club: 'Bayern', photo: 'https://img.a.transfermarkt.technology/portrait/big/344522-1694088698.jpg?lm=1' },
+                { name: 'Eduardo Camavinga', pos: 'CM', club: 'Real Madrid', photo: 'https://img.a.transfermarkt.technology/portrait/big/566730-1694088753.jpg?lm=1' },
+                { name: 'Bradley Barcola', pos: 'LW', club: 'PSG', photo: 'https://img.a.transfermarkt.technology/portrait/big/676005-1694088800.jpg?lm=1' },
+                { name: 'Randal Kolo Muani', pos: 'ST', club: 'PSG', photo: 'https://img.a.transfermarkt.technology/portrait/big/381locally709-1694088847.jpg?lm=1' }
             ]
         },
         'esp': {
             name: 'Spain', code: 'es', color: 'from-red-600 to-yellow-500', coach: 'Luis de la Fuente',
             ranking: 3, titles: 1,
             starters: [
-                { name: 'Unai Simón', pos: 'GK', club: 'Bilbao' },
-                { name: 'Dani Carvajal', pos: 'RB', club: 'Real Madrid' },
-                { name: 'Robin Le Normand', pos: 'CB', club: 'Atlético' },
-                { name: 'Aymeric Laporte', pos: 'CB', club: 'Al-Nassr' },
-                { name: 'Marc Cucurella', pos: 'LB', club: 'Chelsea' },
-                { name: 'Rodri', pos: 'CDM', club: 'Man City' },
-                { name: 'Fabián Ruiz', pos: 'CM', club: 'PSG' },
-                { name: 'Lamine Yamal', pos: 'RW', club: 'Barcelona' },
-                { name: 'Dani Olmo', pos: 'CAM', club: 'Barcelona' },
-                { name: 'Nico Williams', pos: 'LW', club: 'Bilbao' },
-                { name: 'Álvaro Morata', pos: 'ST', club: 'AC Milan' }
+                { name: 'Unai Simón', pos: 'GK', club: 'Bilbao', photo: 'https://img.a.transfermarkt.technology/portrait/big/238223-1725029398.jpg?lm=1' },
+                { name: 'Dani Carvajal', pos: 'RB', club: 'Real Madrid', photo: 'https://img.a.transfermarkt.technology/portrait/big/138927-1694515366.jpg?lm=1' },
+                { name: 'Robin Le Normand', pos: 'CB', club: 'Atlético', photo: 'https://img.a.transfermarkt.technology/portrait/big/406357-1725029495.jpg?lm=1' },
+                { name: 'Aymeric Laporte', pos: 'CB', club: 'Al-Nassr', photo: 'https://img.a.transfermarkt.technology/portrait/big/176553-1631187958.jpg?lm=1' },
+                { name: 'Marc Cucurella', pos: 'LB', club: 'Chelsea', photo: 'https://img.a.transfermarkt.technology/portrait/big/289592-1725029536.jpg?lm=1' },
+                { name: 'Rodri', pos: 'CDM', club: 'Man City', photo: 'https://img.a.transfermarkt.technology/portrait/big/357565-1725029575.jpg?lm=1' },
+                { name: 'Fabián Ruiz', pos: 'CM', club: 'PSG', photo: 'https://img.a.transfermarkt.technology/portrait/big/257268-1725029609.jpg?lm=1' },
+                { name: 'Lamine Yamal', pos: 'RW', club: 'Barcelona', photo: 'https://img.a.transfermarkt.technology/portrait/big/909028-1724828980.png?lm=1' },
+                { name: 'Dani Olmo', pos: 'CAM', club: 'Barcelona', photo: 'https://img.a.transfermarkt.technology/portrait/big/255250-1725029685.jpg?lm=1' },
+                { name: 'Nico Williams', pos: 'LW', club: 'Bilbao', photo: 'https://img.a.transfermarkt.technology/portrait/big/685239-1725029719.jpg?lm=1' },
+                { name: 'Álvaro Morata', pos: 'ST', club: 'AC Milan', photo: 'https://img.a.transfermarkt.technology/portrait/big/128223-1725029758.jpg?lm=1' }
             ],
             subs: [
-                { name: 'David Raya', pos: 'GK', club: 'Arsenal' },
-                { name: 'Nacho', pos: 'CB', club: 'Al-Qadsiah' },
-                { name: 'Pedri', pos: 'CM', club: 'Barcelona' },
-                { name: 'Mikel Merino', pos: 'CM', club: 'Arsenal' },
-                { name: 'Ferran Torres', pos: 'FW', club: 'Barcelona' }
+                { name: 'David Raya', pos: 'GK', club: 'Arsenal', photo: 'https://img.a.transfermarkt.technology/portrait/big/233410-1694515449.jpg?lm=1' },
+                { name: 'Nacho', pos: 'CB', club: 'Al-Qadsiah', photo: 'https://img.a.transfermarkt.technology/portrait/big/58884-1631187924.jpg?lm=1' },
+                { name: 'Pedri', pos: 'CM', club: 'Barcelona', photo: 'https://img.a.transfermarkt.technology/portrait/big/568171-1725029877.jpg?lm=1' },
+                { name: 'Mikel Merino', pos: 'CM', club: 'Arsenal', photo: 'https://img.a.transfermarkt.technology/portrait/big/244753-1725029910.jpg?lm=1' },
+                { name: 'Ferran Torres', pos: 'FW', club: 'Barcelona', photo: 'https://img.a.transfermarkt.technology/portrait/big/398184-1725029944.jpg?lm=1' }
             ]
         },
         // Fallback
@@ -157,14 +157,27 @@ export default function TeamDetails() {
                         <div className="space-y-3">
                             {team.starters.length > 0 ? team.starters.map((player, i) => (
                                 <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--bg-card)] border border-white/5 hover:border-green-500/30 transition-colors">
-                                    <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-400">
-                                        {player.pos}
+                                    <div className="relative">
+                                        <div className="w-12 h-12 rounded-full bg-gray-700 overflow-hidden border-2 border-green-900/50">
+                                            <img
+                                                src={player.photo || `https://ui-avatars.com/api/?name=${player.name}&background=1f2937&color=fff&size=128`}
+                                                alt={player.name}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = `https://ui-avatars.com/api/?name=${player.name}&background=1f2937&color=fff&size=128`;
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="absolute -bottom-1 -right-1 bg-green-900 text-[10px] font-bold px-1.5 py-0.5 rounded border border-green-500 text-green-100">
+                                            {player.pos}
+                                        </div>
                                     </div>
                                     <div className="flex-1">
-                                        <div className="font-bold">{player.name}</div>
-                                        <div className="text-xs text-gray-500">{player.club}</div>
+                                        <div className="font-bold text-white">{player.name}</div>
+                                        <div className="text-xs text-gray-400">{player.club}</div>
                                     </div>
-                                    <div className="text-lg font-black text-gray-700">#{i + 1}</div>
+                                    <div className="text-xl font-black text-gray-700 opacity-50">#{i + 1}</div>
                                 </div>
                             )) : <div className="text-gray-500">No data available</div>}
                         </div>
@@ -178,12 +191,25 @@ export default function TeamDetails() {
                         <div className="space-y-3">
                             {team.subs.length > 0 ? team.subs.map((player, i) => (
                                 <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--bg-card)] border border-white/5 hover:border-yellow-500/30 transition-colors opacity-80">
-                                    <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-500">
-                                        {player.pos}
+                                    <div className="relative">
+                                        <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden border border-yellow-900/50">
+                                            <img
+                                                src={player.photo || `https://ui-avatars.com/api/?name=${player.name}&background=1f2937&color=fff&size=128`}
+                                                alt={player.name}
+                                                className="w-full h-full object-cover grayscale"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = `https://ui-avatars.com/api/?name=${player.name}&background=1f2937&color=fff&size=128`;
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="absolute -bottom-1 -right-1 bg-yellow-900 text-[9px] font-bold px-1.5 py-0.5 rounded border border-yellow-500 text-yellow-100">
+                                            {player.pos}
+                                        </div>
                                     </div>
                                     <div className="flex-1">
-                                        <div className="font-bold">{player.name}</div>
-                                        <div className="text-xs text-gray-600">{player.club}</div>
+                                        <div className="font-bold text-gray-300">{player.name}</div>
+                                        <div className="text-xs text-gray-500">{player.club}</div>
                                     </div>
                                 </div>
                             )) : <div className="text-gray-500">No data available</div>}

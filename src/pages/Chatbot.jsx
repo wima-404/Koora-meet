@@ -52,15 +52,19 @@ export default function Chatbot() {
                 setStep('MAIN_MENU');
                 addBotMessage("Comment puis-je vous aider aujourd'hui ? 🏆", [
                     { label: "🏟️ Stade du match", value: "1" },
-                    { label: "👕 Boutiques Officielles", value: "2" },
+                    { label: "👕 Boutiques", value: "2" },
                     { label: "🎉 Fan Zones", value: "3" },
                     { label: "📍 Activités", value: "4" },
                     { label: "🎟️ Billetterie", value: "5" },
                     { label: "🚆 Transport", value: "6" },
                     { label: "🏨 Hébergement", value: "7" },
                     { label: "🚑 Urgences", value: "8" },
-                    { label: "💬 Langue & Culture", value: "9" },
-                    { label: "☀️ Météo", value: "10" }
+                    { label: "💬 Langue", value: "9" },
+                    { label: "☀️ Météo", value: "10" },
+                    { label: "📜 Règles Stade", value: "11" },
+                    { label: "🍽️ Restaurants", value: "12" },
+                    { label: "📱 WiFi/Internet", value: "13" },
+                    { label: "🎁 Souvenirs", value: "14" }
                 ]);
             }, 500);
             return;
@@ -113,6 +117,18 @@ export default function Chatbot() {
                 case "10":
                     response = "☀️ Météo Casablanca : 26°C, Ensoleillé.\nRabat : 24°C, Vent léger.";
                     break;
+                case "11":
+                    response = "📜 **Règles du Stade** :\n- Interdiction de fumée\n- Pas d'objets dangereux\n- Contrôle de sécurité obligatoire\n- Arrivez 1h avant le coup d'envoi";
+                    break;
+                case "12":
+                    response = "🍽️ **Restaurants recommandés** :\n- La Sqala (Médina)\n- Paul (Morocco Mall)\n- Le Cabestan (Front de mer)\n- Al Mounia (Cuisine traditionnelle)";
+                    break;
+                case "13":
+                    response = "📱 **WiFi** : Disponible gratuitement dans les stades et Fan Zones.\nRéseau : 'KOORA_2030_FREE'\nPas de mot de passe requis.";
+                    break;
+                case "14":
+                    response = "🎁 **Souvenirs** :\n- Maillots officiels : Morocco Mall\n- Pin's & Écharpes : Boutiques Fan Zone\n- Artisanat local : Médina Casablanca";
+                    break;
 
                 default:
                     response = "Je n'ai pas compris. Veuillez choisir une option dans la liste 👇";
@@ -126,7 +142,11 @@ export default function Chatbot() {
                         { label: "🏨 Hôtels", value: "7" },
                         { label: "🚑 Urgences", value: "8" },
                         { label: "💬 Langue", value: "9" },
-                        { label: "☀️ Météo", value: "10" }
+                        { label: "☀️ Météo", value: "10" },
+                        { label: "📜 Règles", value: "11" },
+                        { label: "🍽️ Restau", value: "12" },
+                        { label: "📱 WiFi", value: "13" },
+                        { label: "🎁 Souvenirs", value: "14" }
                     ];
             }
             setTimeout(() => addBotMessage(response, nextOptions), 500);
