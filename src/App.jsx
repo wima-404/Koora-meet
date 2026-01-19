@@ -12,8 +12,9 @@ import EditProfile from './pages/EditProfile';
 import GroupsList from './pages/GroupsList';
 import CreateGroup from './pages/CreateGroup';
 import ChatRoom from './pages/ChatRoom';
-import Chatbot from './pages/Chatbot';
-import { Teams, Stats, Settings } from './pages/Placeholders';
+import Settings from './pages/Settings';
+import Stats from './pages/Stats';
+import Teams from './pages/Teams';
 
 // Placeholder for future Dashboard
 // Removed inline component
