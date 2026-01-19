@@ -112,6 +112,17 @@ export default function Settings() {
                     isDestructive
                     onClick={handleLogout}
                 />
+                <SettingItem
+                    icon={Shield}
+                    label="Reset App Data (Demo)"
+                    isDestructive
+                    type="button"
+                    onClick={() => {
+                        if (confirm('Reset all data? This cannot be undone.')) {
+                            import('../services/storage').then(m => m.SystemService.resetApp());
+                        }
+                    }}
+                />
             </SettingSection>
 
             <p className="text-center text-gray-600 text-xs mt-8">

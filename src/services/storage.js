@@ -124,12 +124,31 @@ export const GroupService = {
     groups[index].participants.push(currentUser.id);
     localStorage.setItem(KEYS.GROUPS, JSON.stringify(groups));
     return groups[index];
+  },
+
+  leaveGroup: (groupId) => {
+    const currentUser = AuthService.getCurrentUser();
+    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const index = groups.findIndex(g => g.id === groupId);
+
+    if (index === -1) throw new Error("Groupe non trouvé");
+
+    groups[index].participants = groups[index].participants.filter(id => id !== currentUser.id);
+    localStorage.setItem(KEYS.GROUPS, JSON.stringify(groups));
   }
 };
 
 // --- CHAT SERVICE ---
 export const ChatService = {
   sendMessage: (roomId, text, senderOverride = null) => {
+    // Bad Word Filter (Simple)
+    const badWords = ['bad', 'hate', 'stupid', 'idiot']; // Add localized words as needed
+    const containsBadWord = badWords.some(word => text.toLowerCase().includes(word));
+
+    if (containsBadWord) {
+      throw new Error("Message contains inappropriate content.");
+    }
+
     const currentUser = AuthService.getCurrentUser();
     const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES));
 
@@ -156,6 +175,32 @@ export const ChatService = {
   getMessages: (roomId) => {
     const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES)) || [];
     return messages.filter(m => m.roomId === roomId).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }
+};
+
+// --- SECURITY SERVICE (Simple simulation) ---
+export const SecurityService = {
+  blockUser: (userId) => {
+    // In a real app, store this. For now, just simulate success.
+    console.log(`User ${userId} blocked.`);
+    return true;
+  },
+  reportUser: (userId, reason) => {
+    console.log(`User ${userId} reported for: ${reason}`);
+    return true;
+  }
+};
+
+// --- SYSTEM SERVICE ---
+export const SystemService = {
+  resetApp: () => {
+    localStorage.removeItem(KEYS.USERS);
+    localStorage.removeItem(KEYS.CURRENT_USER);
+    localStorage.removeItem(KEYS.GROUPS);
+    localStorage.removeItem(KEYS.MESSAGES);
+    localStorage.removeItem(KEYS.POSTS);
+    localStorage.removeItem(KEYS.CHATBOT_SESSIONS);
+    window.location.reload();
   }
 };
 
@@ -198,5 +243,17 @@ export const PostService = {
 
   getAllPosts: () => {
     return JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+  }
+};
+
+// --- USER SERVICE ---
+export const UserService = {
+  getAllUsers: () => {
+    return JSON.parse(localStorage.getItem(KEYS.USERS)) || [];
+  },
+
+  getUserById: (id) => {
+    const users = JSON.parse(localStorage.getItem(KEYS.USERS)) || [];
+    return users.find(u => u.id === id) || null;
   }
 };

@@ -15,7 +15,22 @@ export default function Profile() {
         navigate('/');
     };
 
-    const getFlagUrl = (country) => `https://flagcdn.com/w80/${country?.slice(0, 2).toLowerCase() || 'ma'}.png`;
+    const getCountryCode = (teamName) => {
+        if (!teamName) return 'ma';
+        const map = {
+            'Maroc': 'ma',
+            'France': 'fr',
+            'Espagne': 'es',
+            'Portugal': 'pt',
+            'Brazil': 'br',
+            'Argentina': 'ar'
+        };
+        return map[teamName] || 'ma';
+    };
+
+    const countryCode = getCountryCode(user.equipe);
+    const flagUrl = `https://flagcdn.com/w1600/${countryCode}.png`;
+    const smallFlagUrl = `https://flagcdn.com/w80/${countryCode}.png`;
 
     return (
         <div className="flex flex-col lg:flex-row gap-8 pt-8 pb-20">
@@ -54,24 +69,30 @@ export default function Profile() {
 
             {/* Right Profile Card */}
             <div className="flex-1">
-                <div className="card relative overflow-hidden">
-                    {/* Header/Banner BG */}
-                    <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-red-900 to-black opacity-50"></div>
+                <div className="card relative overflow-hidden group">
+                    {/* Header/Banner BG - DYNAMIC FLAG */}
+                    <div className="absolute top-0 left-0 right-0 h-40 overflow-hidden">
+                        <div
+                            className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-80 transition-opacity duration-700"
+                            style={{ backgroundImage: `url(${flagUrl})` }}
+                        ></div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg-card)]"></div>
+                    </div>
 
-                    <div className="relative pt-16 px-4 flex flex-col items-center mb-8">
+                    <div className="relative pt-24 px-4 flex flex-col items-center mb-8">
                         <div className="relative mb-4">
                             <div className="w-32 h-32 rounded-full border-4 border-[var(--bg-card)] bg-gray-800 overflow-hidden shadow-2xl">
                                 {user.photo ? <img src={user.photo} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-4xl">👤</div>}
                             </div>
                             <div className="absolute bottom-2 right-2 w-8 h-8 rounded-full border-2 border-[var(--bg-card)] overflow-hidden shadow-lg">
-                                <img src={getFlagUrl('ma')} className="w-full h-full object-cover" />
+                                <img src={smallFlagUrl} className="w-full h-full object-cover" />
                             </div>
                             <Link to="/profile/edit" className="absolute bottom-2 left-2 p-2 bg-red-600 rounded-full text-white shadow-lg hover:bg-red-500 transition-colors">
                                 <Edit size={14} />
                             </Link>
                         </div>
 
-                        <h2 className="text-2xl font-bold mb-1">{user.nom} {user.prenom}</h2>
+                        <h2 className="text-2xl font-bold mb-1">{user.nom}</h2>
                         <div className="flex items-center gap-4 text-sm">
                             <span className="flex items-center gap-1 text-gray-400"><MapPin size={14} /> {user.ville}</span>
                             <span className="px-2 py-0.5 rounded bg-green-900/50 text-green-400 font-bold text-xs border border-green-800">PRO MEMBER</span>
@@ -91,7 +112,7 @@ export default function Profile() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="bg-black/20 p-3 rounded-lg border border-white/5">
                                     <div className="text-xs text-gray-500 mb-1">Pseudo</div>
-                                    <div className="font-semibold">{user.nom}_{user.prenom}</div>
+                                    <div className="font-semibold">{user.nom || user.email.split('@')[0]}</div>
                                 </div>
                                 <div className="bg-black/20 p-3 rounded-lg border border-white/5">
                                     <div className="text-xs text-gray-500 mb-1">City</div>
@@ -103,7 +124,7 @@ export default function Profile() {
                                 </div>
                                 <div className="bg-black/20 p-3 rounded-lg border border-white/5">
                                     <div className="text-xs text-gray-500 mb-1">Fan Since</div>
-                                    <div className="font-semibold">2024</div>
+                                    <div className="font-semibold">{new Date(user.createdAt).getFullYear() || '2024'}</div>
                                 </div>
                             </div>
                         </div>
@@ -112,15 +133,23 @@ export default function Profile() {
                             <h3 className="text-lg font-bold flex items-center gap-2 text-red-500 mb-4">
                                 <Star size={18} /> Favorite Team
                             </h3>
-                            <div className="p-4 rounded-xl bg-gradient-to-r from-red-900/40 to-black border border-red-900/30 flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="text-3xl">🇲🇦</div>
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-red-900/40 to-black border border-red-900/30 flex items-center justify-between overflow-hidden relative">
+                                {/* Subtle background flag texture for this card too */}
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center opacity-10"
+                                    style={{ backgroundImage: `url(${flagUrl})` }}
+                                ></div>
+
+                                <div className="flex items-center gap-4 relative z-10">
+                                    <div className="text-3xl shadow-lg rounded-full overflow-hidden w-10 h-10 border border-white/10">
+                                        <img src={smallFlagUrl} className="w-full h-full object-cover" />
+                                    </div>
                                     <div>
-                                        <div className="font-bold text-lg">Morocco</div>
-                                        <div className="text-xs text-green-400">Atlas Lions • Group F</div>
+                                        <div className="font-bold text-lg">{user.equipe}</div>
+                                        <div className="text-xs text-green-400">Road to 2030 • Supporter</div>
                                     </div>
                                 </div>
-                                <button className="text-xs font-bold bg-white/10 px-3 py-1 rounded hover:bg-white/20">VS Stats</button>
+                                <button className="text-xs font-bold bg-white/10 px-3 py-1 rounded hover:bg-white/20 relative z-10">VS Stats</button>
                             </div>
                         </div>
 

@@ -12,9 +12,11 @@ import EditProfile from './pages/EditProfile';
 import GroupsList from './pages/GroupsList';
 import CreateGroup from './pages/CreateGroup';
 import ChatRoom from './pages/ChatRoom';
+import Chatbot from './pages/Chatbot';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
 import Teams from './pages/Teams';
+import PrivateChat from './pages/PrivateChat';
 
 // Placeholder for future Dashboard
 // Removed inline component
@@ -39,6 +41,9 @@ function App() {
           <Route path="/teams" element={<Teams />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/settings" element={<Settings />} />
+          {/* Private Chat Route */}
+          <Route path="/chat" element={<PrivateChat />} />
+          <Route path="/chat/:userId" element={<PrivateChat />} />
         </Route>
 
         {/* Catch all */}

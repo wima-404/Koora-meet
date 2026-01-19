@@ -152,7 +152,25 @@ export default function ChatRoom() {
 
                 <div className="p-4 bg-red-900/10 border-t border-red-900/20">
                     <div className="text-xs font-bold text-red-500 uppercase mb-1">Up Next</div>
-                    <div className="font-bold">QUARTER FINALS: MARCO VS ...</div>
+                    <div className="font-bold mb-4">QUARTER FINALS: MARCO VS ...</div>
+
+                    <button
+                        onClick={() => {
+                            if (confirm('Leave this squad?')) {
+                                try {
+                                    import('../services/storage').then(m => {
+                                        m.GroupService.leaveGroup(groupId);
+                                        navigate('/groups');
+                                    });
+                                } catch (e) {
+                                    alert(e.message);
+                                }
+                            }
+                        }}
+                        className="w-full py-2 rounded-lg border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white transition-colors text-sm font-bold flex items-center justify-center gap-2"
+                    >
+                        Leave Squad
+                    </button>
                 </div>
             </div>
 

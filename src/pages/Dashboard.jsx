@@ -223,25 +223,25 @@ export default function Dashboard() {
                         <span className="text-xs text-red-500 cursor-pointer">+ Invite</span>
                     </div>
                     <div className="p-4 space-y-4">
-                        <div className="flex items-center justify-between">
+                        <Link to="/chat/amine_m" className="flex items-center justify-between group cursor-pointer">
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden"><img src="https://i.pravatar.cc/150?img=3" alt="" /></div>
+                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden group-hover:ring-2 ring-red-500 transition-all"><img src="https://i.pravatar.cc/150?img=3" alt="" /></div>
                                 <div>
-                                    <div className="font-bold text-sm">Amine M.</div>
+                                    <div className="font-bold text-sm group-hover:text-red-500 transition-colors">Amine M.</div>
                                     <div className="text-[10px] text-green-500">Online</div>
                                 </div>
                             </div>
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        </div>
-                        <div className="flex items-center justify-between">
+                        </Link>
+                        <Link to="/chat/sarah_k" className="flex items-center justify-between group cursor-pointer">
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden"><img src="https://i.pravatar.cc/150?img=5" alt="" /></div>
+                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden group-hover:ring-2 ring-red-500 transition-all"><img src="https://i.pravatar.cc/150?img=5" alt="" /></div>
                                 <div>
-                                    <div className="font-bold text-sm">Sarah K.</div>
+                                    <div className="font-bold text-sm group-hover:text-red-500 transition-colors">Sarah K.</div>
                                     <div className="text-[10px] text-gray-500">Offline 2h ago</div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
 
