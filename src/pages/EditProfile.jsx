@@ -18,6 +18,17 @@ export default function EditProfile() {
         photo: user?.photo || ''
     });
 
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, photo: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         AuthService.updateProfile(formData);
@@ -58,6 +69,67 @@ export default function EditProfile() {
                                 placeholder="Enter your first name"
                             />
                         </div>
+
+                        {/* Profile Photo Section */}
+                        <div className="mt-6">
+                            <label className="block text-sm font-medium mb-3 text-gray-300 flex items-center gap-2">
+                                <Camera size={16} /> Photo de Profil
+                            </label>
+                            <div className="flex flex-col md:flex-row gap-6 items-start">
+                                {/* Current Photo Preview */}
+                                <div className="flex flex-col items-center gap-3">
+                                    <div className="w-24 h-24 rounded-full bg-gray-800 overflow-hidden border-4 border-red-900/50 shadow-lg">
+                                        {formData.photo ?
+                                            <img src={formData.photo} className="w-full h-full object-cover" alt="Profile" onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y="65" font-size="50" text-anchor="middle" x="50"%3E👤%3C/text%3E%3C/svg%3E';
+                                            }} />
+                                            : <div className="w-full h-full flex items-center justify-center text-4xl">👤</div>
+                                        }
+                                    </div>
+                                    <span className="text-xs text-gray-500">Aperçu</span>
+                                </div>
+
+                                <div className="flex-1 w-full space-y-4">
+                                    {/* File Upload */}
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-300">Charger depuis votre appareil</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleFileUpload}
+                                            className="w-full bg-[var(--bg-input)] border border-white/5 rounded-xl p-3 text-white focus:outline-none focus:border-red-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-500 file:cursor-pointer"
+                                        />
+                                    </div>
+
+                                    {/* URL Input */}
+                                    <Input
+                                        label="Ou entrez une URL"
+                                        value={formData.photo || ''}
+                                        onChange={e => setFormData({ ...formData, photo: e.target.value })}
+                                        placeholder="https://example.com/photo.jpg"
+                                    />
+
+                                    {/* Preset Avatars */}
+                                    <div>
+                                        <label className="block text-xs font-medium mb-2 text-gray-400">Ou choisissez un avatar :</label>
+                                        <div className="grid grid-cols-5 gap-2">
+                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                                <button
+                                                    key={num}
+                                                    type="button"
+                                                    onClick={() => setFormData({ ...formData, photo: `https://i.pravatar.cc/150?img=${num}` })}
+                                                    className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 hover:border-red-500 transition-all hover:scale-110"
+                                                >
+                                                    <img src={`https://i.pravatar.cc/150?img=${num}`} className="w-full h-full object-cover" alt={`Avatar ${num}`} />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="mt-4">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Bio</label>
                             <textarea
