@@ -28,7 +28,9 @@ export default function Layout() {
             {/* --- Desktop Left Sidebar --- */}
             <aside className="hidden lg:flex flex-col w-64 fixed left-0 top-0 bottom-0 bg-[var(--bg-card)] border-r border-white/5 p-6 z-50">
                 <div className="flex items-center gap-3 mb-10 px-2">
-                    <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center font-bold text-white">K</div>
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-red-600">
+                        <img src="/logo.jpg" alt="Koora Meet" className="w-full h-full object-cover" />
+                    </div>
                     <span className="text-xl font-black tracking-tight">Koora Meet</span>
                 </div>
 
