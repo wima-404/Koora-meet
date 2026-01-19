@@ -13,6 +13,7 @@ import GroupsList from './pages/GroupsList';
 import CreateGroup from './pages/CreateGroup';
 import ChatRoom from './pages/ChatRoom';
 import Chatbot from './pages/Chatbot';
+import { Teams, Stats, Settings } from './pages/Placeholders';
 
 // Placeholder for future Dashboard
 // Removed inline component
@@ -34,6 +35,9 @@ function App() {
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId/chat" element={<ChatRoom />} />
           <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         {/* Catch all */}

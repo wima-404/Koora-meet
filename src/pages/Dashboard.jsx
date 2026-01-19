@@ -13,7 +13,7 @@ export default function Dashboard() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             borderRadius: 'var(--radius-xl)',
-            padding: '2.5rem',
+            padding: '2rem',
             color: 'white',
             marginBottom: '2rem',
             position: 'relative',
@@ -21,36 +21,28 @@ export default function Dashboard() {
             border: '1px solid var(--border-color)',
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
         }}>
-            <div className="flex justify-between items-start mb-8">
-                <div className="bg-red-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/20">
-                    LIVE NOW
-                </div>
-                <div className="bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1 border border-white/10">
-                    <Calendar size={12} /> Today, 20:00 UTC+1
+            <div className="flex justify-between items-start mb-12">
+                <div className="flex gap-2">
+                    <span className="bg-red-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/20">
+                        SOLD OUT
+                    </span>
+                    <span className="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/10">
+                        GROUP B
+                    </span>
                 </div>
             </div>
 
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h2 className="text-4xl font-black mb-1">MAR</h2>
-                    <div className="text-sm opacity-75">Atlas Lions</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-4xl font-black">2 - 1</div>
-                    <div className="text-xs font-bold text-red-500 bg-black/50 px-2 rounded mt-1">65'</div>
-                </div>
-                <div className="text-right">
-                    <h2 className="text-4xl font-black mb-1">POR</h2>
-                    <div className="text-sm opacity-75">Seleção</div>
-                </div>
+            <h2 className="text-4xl font-black mb-2">Morocco vs Portugal</h2>
+            <div className="flex items-center gap-2 text-gray-300 mb-8 font-medium">
+                <Calendar size={16} /> Tomorrow, 22:50 • Casablanca
             </div>
 
             <div className="flex gap-3">
-                <Button variant="primary" style={{ width: 'auto', padding: '0.75rem 1.5rem' }}>
-                    Watch Stream
+                <Button variant="primary" style={{ backgroundColor: 'white', color: 'black', background: 'white' }}>
+                    View Details
                 </Button>
-                <button className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors font-bold text-sm border border-white/5">
-                    Match Stats
+                <button className="px-6 py-3 rounded-full bg-transparent border border-white/20 hover:bg-white/10 transition-colors font-bold text-sm">
+                    Stats Match
                 </button>
             </div>
         </div>
