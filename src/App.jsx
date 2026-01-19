@@ -5,8 +5,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { ProtectedRoute } from './components/UI';
 
+import Dashboard from './pages/Dashboard';
+
 // Placeholder for future Dashboard
-const Dashboard = () => <div className="container"><h1>Dashboard (Coming Soon)</h1></div>;
+// Removed inline component
 
 function App() {
   return (
