@@ -23,6 +23,7 @@ function App() {
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/groups" element={<GroupsList />} />
           <Route path="/groups/create" element={<CreateGroup />} />
+          <Route path="/groups/:groupId/chat" element={<ChatRoom />} />
           <Route path="/chatbot" element={<Chatbot />} />
         </Route>
 
