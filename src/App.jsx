@@ -16,6 +16,7 @@ import Chatbot from './pages/Chatbot';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
 import Teams from './pages/Teams';
+import TeamDetails from './pages/TeamDetails';
 import PrivateChat from './pages/PrivateChat';
 
 // Placeholder for future Dashboard
@@ -39,6 +40,7 @@ function App() {
           <Route path="/groups/:groupId/chat" element={<ChatRoom />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:teamId" element={<TeamDetails />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/settings" element={<Settings />} />
           {/* Private Chat Route */}

@@ -54,7 +54,13 @@ export default function Chatbot() {
                     { label: "🏟️ Stade du match", value: "1" },
                     { label: "👕 Boutiques Officielles", value: "2" },
                     { label: "🎉 Fan Zones", value: "3" },
-                    { label: "📍 Activités", value: "4" }
+                    { label: "📍 Activités", value: "4" },
+                    { label: "🎟️ Billetterie", value: "5" },
+                    { label: "🚆 Transport", value: "6" },
+                    { label: "🏨 Hébergement", value: "7" },
+                    { label: "🚑 Urgences", value: "8" },
+                    { label: "💬 Langue & Culture", value: "9" },
+                    { label: "☀️ Météo", value: "10" }
                 ]);
             }, 500);
             return;
@@ -83,13 +89,44 @@ export default function Chatbot() {
                     ];
                     setStep('ACTIVITIES');
                     break;
+                case "5":
+                    response = "🎟️ Les billets sont en vente sur le site officiel de la FIFA ou via l'application 'Koora Tickets'.\n\nPrix à partir de 200 DH.";
+                    break;
+                case "6":
+                    response = "Pour quelle ville cherchez-vous des infos transport ?";
+                    nextOptions = [
+                        { label: "Casablanca", value: "CASA" },
+                        { label: "Rabat", value: "RABAT" },
+                        { label: "Tanger", value: "TANGER" }
+                    ];
+                    setStep('TRANSPORT');
+                    break;
+                case "7":
+                    response = "🏨 Nous avons des partenariats avec :\n- Hotel Kenzi Tower\n- Onomo Hotel\n- Sofitel Tour Blanche.\n\nUtilisez le code 'KOORA2030' pour -15% !";
+                    break;
+                case "8":
+                    response = "🚑 **Urgences** : 190 (Police), 15 (Pompiers/Ambulance).\n📞 **Ambassades** :\n- France : +212 537 68 97 00\n- Espagne : +212 537 63 39 00";
+                    break;
+                case "9":
+                    response = "🇲🇦 Quelques mots en Darija :\n- Bonjour : Salam\n- Merci : Choukran\n- Ça va ? : Labass ?\n- S'il vous plaît : Afak";
+                    break;
+                case "10":
+                    response = "☀️ Météo Casablanca : 26°C, Ensoleillé.\nRabat : 24°C, Vent léger.";
+                    break;
+
                 default:
                     response = "Je n'ai pas compris. Veuillez choisir une option dans la liste 👇";
                     nextOptions = [
                         { label: "🏟️ Stade", value: "1" },
                         { label: "👕 Boutiques", value: "2" },
                         { label: "🎉 Fan Zones", value: "3" },
-                        { label: "📍 Activités", value: "4" }
+                        { label: "📍 Activités", value: "4" },
+                        { label: "🎟️ Billets", value: "5" },
+                        { label: "🚆 Transport", value: "6" },
+                        { label: "🏨 Hôtels", value: "7" },
+                        { label: "🚑 Urgences", value: "8" },
+                        { label: "💬 Langue", value: "9" },
+                        { label: "☀️ Météo", value: "10" }
                     ];
             }
             setTimeout(() => addBotMessage(response, nextOptions), 500);
@@ -103,6 +140,25 @@ export default function Chatbot() {
                 case "B": response = "🥘 Pour un bon tajine, essayez **'Rick's Café'** ou les grillades à **Bab Marrakech**."; break;
                 case "C": response = "⚽ Pourquoi pas un match 5vs5 à **City Foot** ou du surf à **Aïn Diab** ?"; break;
                 default: response = "Choix non reconnu.";
+            }
+            setTimeout(() => {
+                addBotMessage(response);
+                addBotMessage("Autre chose ?", [
+                    { label: "🔄 Menu Principal", value: "START_MAIN" },
+                    { label: "👋 Terminer", value: "END" }
+                ]);
+            }, 500);
+            setStep('MAIN_MENU');
+            return;
+        }
+
+        if (step === 'TRANSPORT') {
+            let response = "";
+            switch (text) {
+                case "CASA": response = "🚆 **Casablanca** : Utilisez le Tramway T1/T2 (Ticket 6 DH) ou les Petits Taxis Rouges (Compteur obligatoire)."; break;
+                case "RABAT": response = "🚆 **Rabat** : Le Tramway relie Salé et Rabat. Taxis bleus disponibles. Gare Rabat-Agdal pour le TGV."; break;
+                case "TANGER": response = "🚆 **Tanger** : Taxis bleus ciel. Al-Boraq relie Casablanca en 2h10."; break;
+                default: response = "Ville non reconnue.";
             }
             setTimeout(() => {
                 addBotMessage(response);
@@ -143,8 +199,8 @@ export default function Chatbot() {
                         <div className={`flex flex-col gap-2 max-w-[85%] lg:max-w-[70%] ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
                             <div
                                 className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${msg.sender === 'user'
-                                        ? 'bg-white/10 text-white rounded-tr-none'
-                                        : 'bg-[var(--bg-card)] border border-white/5 text-gray-200 rounded-tl-none shadow-xl'
+                                    ? 'bg-white/10 text-white rounded-tr-none'
+                                    : 'bg-[var(--bg-card)] border border-white/5 text-gray-200 rounded-tl-none shadow-xl'
                                     }`}
                             >
                                 {msg.text}

@@ -106,7 +106,11 @@ export default function Profile() {
                                 <h3 className="text-lg font-bold flex items-center gap-2 text-red-500">
                                     <Shield size={18} /> Personal Info
                                 </h3>
-                                <Link to="/profile/edit" className="text-xs text-gray-500 hover:text-white">Edit Details</Link>
+                                <div className="flex gap-2">
+                                    <Link to="/profile/edit" className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full text-white flex items-center gap-1 transition-colors">
+                                        <Edit size={12} /> Modifier
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -149,7 +153,7 @@ export default function Profile() {
                                         <div className="text-xs text-green-400">Road to 2030 • Supporter</div>
                                     </div>
                                 </div>
-                                <button className="text-xs font-bold bg-white/10 px-3 py-1 rounded hover:bg-white/20 relative z-10">VS Stats</button>
+                                <Link to="/teams" className="text-xs font-bold bg-white/10 px-3 py-1 rounded hover:bg-white/20 relative z-10">See Team</Link>
                             </div>
                         </div>
 

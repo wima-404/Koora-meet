@@ -30,7 +30,11 @@ export default function Teams() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {teams.map(team => (
-                    <div key={team.id} className="card group hover:border-red-500/50 transition-all cursor-pointer relative overflow-hidden">
+                    <div
+                        key={team.id}
+                        onClick={() => window.location.href = `/teams/${team.id}`} // Using href force for demo or useNavigate if available. Better refactor to useLink
+                        className="card group hover:border-red-500/50 transition-all cursor-pointer relative overflow-hidden"
+                    >
                         {/* Background Gradient */}
                         <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${team.color} opacity-20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:opacity-40 transition-opacity`}></div>
 
