@@ -101,6 +101,24 @@ export default function CreateGroup() {
                             </p>
                         </div>
 
+                        <div className="flex flex-col gap-4">
+                            <Input
+                                label="Squad Name"
+                                placeholder="e.g., Morocco Ultras, Weekend Warriors"
+                                value={formData.name}
+                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                            />
+                            <div className="input-group">
+                                <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
+                                <textarea
+                                    className="w-full bg-[var(--bg-input)] border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-red-500 transition-colors resize-none h-24"
+                                    placeholder="What's the plan? Where are we meeting?"
+                                    value={formData.description}
+                                    onChange={e => setFormData({ ...formData, description: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-2">Number of Participants</label>
                             <div className="flex gap-2">
@@ -110,8 +128,8 @@ export default function CreateGroup() {
                                         type="button"
                                         onClick={() => setFormData({ ...formData, maxParticipants: num })}
                                         className={`flex-1 py-3 rounded-lg font-bold border ${formData.maxParticipants === num
-                                                ? 'bg-red-600 border-red-600 text-white'
-                                                : 'bg-[var(--bg-input)] border-white/10 text-gray-400 hover:bg-white/5'
+                                            ? 'bg-red-600 border-red-600 text-white'
+                                            : 'bg-[var(--bg-input)] border-white/10 text-gray-400 hover:bg-white/5'
                                             }`}
                                     >
                                         {num}

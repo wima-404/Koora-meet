@@ -26,6 +26,41 @@ export default function ChatRoom() {
         setMessages(msgs);
     };
 
+    // --- SIMULATED CHAT LOGIC ---
+    useEffect(() => {
+        // Randomly receive a message from a "bot" user to simulate activity
+        const timer = setInterval(() => {
+            const shouldMessage = Math.random() > 0.6; // 40% chance every 8s
+            if (!shouldMessage || !group) return;
+
+            const mockUsers = [
+                { id: 'bot-1', name: 'Luisita 🇪🇸', img: 34 },
+                { id: 'bot-2', name: 'Sarah 🇬🇧', img: 45 },
+                { id: 'bot-3', name: 'Daniel 🎾', img: 12 }
+            ];
+
+            const randomPhrases = [
+                "Anyone seeing this referee? 😠",
+                "What a save! 🧤",
+                "Vamos Morocco!!! 🇲🇦",
+                "Can't believe we are winning this!",
+                "Who is going to the Fan Zone later?",
+                "This match is insane 🔥",
+                "Pass the ball! ⚽"
+            ];
+
+            const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+            const randomText = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+
+            // Inject message directly into storage
+            ChatService.sendMessage(groupId, randomText, randomUser);
+            loadMessages(); // Refresh UI
+
+        }, 8000 + Math.random() * 5000); // Every 8-13 seconds
+
+        return () => clearInterval(timer);
+    }, [groupId, group]);
+
     const handleSend = (e) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
@@ -33,6 +68,13 @@ export default function ChatRoom() {
         setNewMessage('');
         loadMessages();
         setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+
+        // Simulate immediate response sometimes
+        setTimeout(() => {
+            const mockUsers = [{ id: 'bot-2', name: 'Sarah 🇬🇧', img: 45 }];
+            ChatService.sendMessage(groupId, "Totally agree! 👀", mockUsers[0]);
+            loadMessages();
+        }, 3000);
     };
 
     if (!group) return <div>Loading...</div>;
@@ -146,8 +188,8 @@ export default function ChatRoom() {
                                     {!isMe && <span className="block text-xs text-gray-500 mb-1 ml-1">{msg.senderName}</span>}
                                     <div
                                         className={`p-4 rounded-2xl text-sm shadow-md relative ${isMe
-                                                ? 'bg-red-600 text-white rounded-br-sm'
-                                                : 'bg-[#252525] text-gray-200 rounded-bl-sm border border-white/5'
+                                            ? 'bg-red-600 text-white rounded-br-sm'
+                                            : 'bg-[#252525] text-gray-200 rounded-bl-sm border border-white/5'
                                             }`}
                                     >
                                         {msg.text}

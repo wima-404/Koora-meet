@@ -8,6 +8,7 @@ const KEYS = {
   GROUPS: 'koora_groups',
   MESSAGES: 'koora_messages',
   CHATBOT_SESSIONS: 'koora_chatbot_sessions',
+  POSTS: 'koora_posts',
 };
 
 // --- DATA INITIALIZATION ---
@@ -15,6 +16,7 @@ const initStorage = () => {
   if (!localStorage.getItem(KEYS.USERS)) localStorage.setItem(KEYS.USERS, JSON.stringify([]));
   if (!localStorage.getItem(KEYS.GROUPS)) localStorage.setItem(KEYS.GROUPS, JSON.stringify([]));
   if (!localStorage.getItem(KEYS.MESSAGES)) localStorage.setItem(KEYS.MESSAGES, JSON.stringify([]));
+  if (!localStorage.getItem(KEYS.POSTS)) localStorage.setItem(KEYS.POSTS, JSON.stringify([]));
 };
 
 // --- AUTH SERVICE ---
@@ -22,7 +24,7 @@ export const AuthService = {
   register: (userData) => {
     initStorage();
     const users = JSON.parse(localStorage.getItem(KEYS.USERS));
-    
+
     if (users.find(u => u.email === userData.email)) {
       throw new Error('Email déjà utilisé');
     }
@@ -45,7 +47,7 @@ export const AuthService = {
     initStorage();
     const users = JSON.parse(localStorage.getItem(KEYS.USERS));
     const user = users.find(u => u.email === email && u.password === password);
-    
+
     if (!user) {
       throw new Error('Email ou mot de passe incorrect');
     }
@@ -61,14 +63,14 @@ export const AuthService = {
   getCurrentUser: () => {
     return JSON.parse(localStorage.getItem(KEYS.CURRENT_USER));
   },
-  
+
   updateProfile: (updatedData) => {
     const currentUser = AuthService.getCurrentUser();
     if (!currentUser) throw new Error("Non connecté");
 
     const users = JSON.parse(localStorage.getItem(KEYS.USERS));
     const index = users.findIndex(u => u.id === currentUser.id);
-    
+
     if (index !== -1) {
       const updatedUser = { ...users[index], ...updatedData };
       users[index] = updatedUser;
@@ -86,7 +88,7 @@ export const GroupService = {
     const currentUser = AuthService.getCurrentUser();
     // Validation: Max 4 participants including creator? Or just max setting?
     // User requested "Max participants (2 à 4)"
-    
+
     const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
     const newGroup = {
       id: crypto.randomUUID(),
@@ -94,7 +96,7 @@ export const GroupService = {
       participants: [currentUser.id],
       ...groupData
     };
-    
+
     groups.push(newGroup);
     localStorage.setItem(KEYS.GROUPS, JSON.stringify(groups));
     return newGroup;
@@ -110,9 +112,9 @@ export const GroupService = {
     const index = groups.findIndex(g => g.id === groupId);
 
     if (index === -1) throw new Error("Groupe non trouvé");
-    
+
     if (groups[index].participants.includes(currentUser.id)) {
-        return groups[index]; // Already joined
+      return groups[index]; // Already joined
     }
 
     if (groups[index].participants.length >= groups[index].maxParticipants) {
@@ -127,15 +129,21 @@ export const GroupService = {
 
 // --- CHAT SERVICE ---
 export const ChatService = {
-  sendMessage: (roomId, text) => {
+  sendMessage: (roomId, text, senderOverride = null) => {
     const currentUser = AuthService.getCurrentUser();
     const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES));
-    
+
+    // Use senderOverride if provided (for simulation), otherwise use current user
+    const sender = senderOverride || {
+      id: currentUser.id,
+      name: currentUser.nom + ' ' + currentUser.prenom
+    };
+
     const newMessage = {
       id: crypto.randomUUID(),
-      roomId, // Can be groupId or private chat ID
-      senderId: currentUser.id,
-      senderName: currentUser.nom + ' ' + currentUser.prenom,
+      roomId,
+      senderId: sender.id,
+      senderName: sender.name,
       text,
       createdAt: new Date().toISOString()
     };
@@ -147,7 +155,7 @@ export const ChatService = {
 
   getMessages: (roomId) => {
     const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES)) || [];
-    return messages.filter(m => m.roomId === roomId).sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+    return messages.filter(m => m.roomId === roomId).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   }
 };
 
@@ -158,9 +166,37 @@ export const ChatbotService = {
     sessions[userId] = { ...sessions[userId], ...data };
     localStorage.setItem(KEYS.CHATBOT_SESSIONS, JSON.stringify(sessions));
   },
-  
+
   getSession: (userId) => {
-     let sessions = JSON.parse(localStorage.getItem(KEYS.CHATBOT_SESSIONS)) || {};
-     return sessions[userId] || {};
+    let sessions = JSON.parse(localStorage.getItem(KEYS.CHATBOT_SESSIONS)) || {};
+    return sessions[userId] || {};
+  }
+};
+
+// --- POST SERVICE ---
+export const PostService = {
+  createPost: (text, image = null) => {
+    const currentUser = AuthService.getCurrentUser();
+    const posts = JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+
+    const newPost = {
+      id: crypto.randomUUID(),
+      userId: currentUser.id,
+      userName: currentUser.nom + ' ' + currentUser.prenom,
+      userPhoto: currentUser.photo,
+      text,
+      image,
+      likes: 0,
+      comments: 0,
+      createdAt: new Date().toISOString()
+    };
+
+    posts.unshift(newPost); // Add to top
+    localStorage.setItem(KEYS.POSTS, JSON.stringify(posts));
+    return newPost;
+  },
+
+  getAllPosts: () => {
+    return JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
   }
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AuthService } from '../services/storage';
+import { AuthService, PostService } from '../services/storage';
 import { Button } from '../components/UI';
 import { Calendar, Users, Flame, ChevronRight, Bell, Plus, Hash } from 'lucide-react';
 
@@ -63,6 +63,23 @@ export default function Dashboard() {
         </div>
     );
 
+    const [posts, setPosts] = React.useState([]);
+    const [isPosting, setIsPosting] = React.useState(false);
+    const [newPostText, setNewPostText] = React.useState('');
+
+    React.useEffect(() => {
+        setPosts(PostService.getAllPosts());
+    }, []);
+
+    const handleCreatePost = (e) => {
+        e.preventDefault();
+        if (!newPostText.trim()) return;
+        PostService.createPost(newPostText);
+        setNewPostText('');
+        setIsPosting(false);
+        setPosts(PostService.getAllPosts());
+    };
+
     return (
         <div className="flex flex-col lg:flex-row gap-8 pb-20 pt-8 lg:pt-12">
             {/* Main Content */}
@@ -101,31 +118,69 @@ export default function Dashboard() {
 
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold">Community Feed</h3>
-                    <span className="text-sm text-red-500 cursor-pointer hover:underline">+ New Post</span>
+                    <button
+                        onClick={() => setIsPosting(!isPosting)}
+                        className="text-sm text-red-500 cursor-pointer hover:underline font-bold"
+                    >
+                        + New Post
+                    </button>
                 </div>
 
-                {/* Feed Post Mockup */}
-                <div className="card hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-gray-700 rounded-full overflow-hidden border-2 border-red-900">
-                            <img src="https://i.pravatar.cc/150?img=11" alt="User" />
+                {/* New Post Form */}
+                {isPosting && (
+                    <div className="card mb-6 animate-in fade-in slide-in-from-top-4 duration-300">
+                        <textarea
+                            className="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-red-500 transition-colors resize-none"
+                            rows="3"
+                            placeholder="What's on your mind?..."
+                            value={newPostText}
+                            onChange={(e) => setNewPostText(e.target.value)}
+                        />
+                        <div className="flex justify-end gap-2 mt-3">
+                            <button
+                                onClick={() => setIsPosting(false)}
+                                className="px-4 py-2 rounded-lg text-gray-400 hover:text-white font-medium"
+                            >
+                                Cancel
+                            </button>
+                            <Button
+                                variant="primary"
+                                style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
+                                onClick={handleCreatePost}
+                            >
+                                Post
+                            </Button>
                         </div>
-                        <div>
-                            <div className="font-bold">Hassan Break</div>
-                            <div className="text-xs text-gray-500">2 hours ago • Rabat, Fan Zone</div>
+                    </div>
+                )}
+
+                {/* Feed Posts */}
+                {posts.length === 0 ? (
+                    <div className="text-center py-10 text-gray-500 border border-dashed border-white/10 rounded-xl">
+                        No posts yet. Be the first to start the conversation!
+                    </div>
+                ) : (
+                    posts.map(post => (
+                        <div key={post.id} className="card hover:bg-white/5 transition-colors mb-4">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-gray-700 rounded-full overflow-hidden border-2 border-red-900">
+                                    <img src={post.userPhoto || `https://i.pravatar.cc/150?u=${post.userId}`} alt="User" />
+                                </div>
+                                <div>
+                                    <div className="font-bold">{post.userName}</div>
+                                    <div className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • Fan Zone</div>
+                                </div>
+                            </div>
+                            <p className="mb-4 text-gray-300 text-lg">
+                                {post.text}
+                            </p>
+                            <div className="flex gap-6 text-sm text-gray-400 border-t border-white/5 pt-4">
+                                <button className="flex items-center gap-2 hover:text-red-500 transition-colors"><Flame size={18} /> {post.likes} Hype</button>
+                                <button className="flex items-center gap-2 hover:text-blue-500 transition-colors"><Hash size={18} /> {post.comments} Comments</button>
+                            </div>
                         </div>
-                    </div>
-                    <p className="mb-4 text-gray-300 text-lg">
-                        Anyone heading to the fan zone tonight? The atmosphere is electric! Predictions for tonight? 🔥🇲🇦
-                    </p>
-                    <div className="h-48 w-full rounded-xl bg-gray-800 mb-4 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?w=800&q=80" className="object-cover w-full h-full opacity-60 hover:scale-105 transition-transform duration-500" alt="Fan Zone" />
-                    </div>
-                    <div className="flex gap-6 text-sm text-gray-400 border-t border-white/5 pt-4">
-                        <button className="flex items-center gap-2 hover:text-red-500 transition-colors"><Flame size={18} /> 245 Hype</button>
-                        <button className="flex items-center gap-2 hover:text-blue-500 transition-colors"><Hash size={18} /> 18 Comments</button>
-                    </div>
-                </div>
+                    ))
+                )}
             </div>
 
             {/* Right Sidebar (Desktop only) */}
