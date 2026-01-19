@@ -3,10 +3,11 @@ import { Navigate } from 'react-router-dom';
 import { AuthService } from '../services/storage';
 
 // --- Button Component ---
-export const Button = ({ children, variant = 'primary', className = '', ...props }) => {
+export const Button = ({ children, variant = 'primary', className = '', style = {}, ...props }) => {
     return (
         <button
             className={`btn btn-${variant} ${className}`}
+            style={style}
             {...props}
         >
             {children}
@@ -18,13 +19,13 @@ export const Button = ({ children, variant = 'primary', className = '', ...props
 export const Input = ({ label, id, error, ...props }) => {
     return (
         <div className="input-group">
-            {label && <label htmlFor={id} style={{ display: 'block', fontSize: '0.9rem', color: '#cbd5e1' }}>{label}</label>}
+            {label && <label htmlFor={id} style={{ display: 'block', fontSize: '0.9rem', color: '#9ca3af', fontWeight: '500' }}>{label}</label>}
             <input
                 id={id}
                 className="input-field"
                 {...props}
             />
-            {error && <span style={{ color: 'var(--accent-primary)', fontSize: '0.8rem' }}>{error}</span>}
+            {error && <span style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', display: 'block', marginTop: '0.25rem' }}>{error}</span>}
         </div>
     );
 };

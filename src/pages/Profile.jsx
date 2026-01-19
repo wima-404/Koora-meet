@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../services/storage';
 import { Button } from '../components/UI';
-import { LogOut, Edit } from 'lucide-react';
+import { LogOut, Edit, MapPin, Shield, Star } from 'lucide-react';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -15,77 +15,122 @@ export default function Profile() {
         navigate('/');
     };
 
-    // Flag logic (Simulated)
-    const getFlagUrl = (country) => {
-        // Simple mapping for demo. In real app, store country code.
-        const code = country?.toLowerCase().slice(0, 2) || 'ma'; // default Morocco
-        return `https://flagcdn.com/w80/${code}.png`;
-    };
+    const getFlagUrl = (country) => `https://flagcdn.com/w80/${country?.slice(0, 2).toLowerCase() || 'ma'}.png`;
 
     return (
-        <div className="flex flex-col items-center pt-8">
-            {/* Profile Header */}
-            <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
-                <div style={{
-                    width: '120px',
-                    height: '120px',
-                    borderRadius: '50%',
-                    backgroundColor: '#334155',
-                    overflow: 'hidden',
-                    border: '4px solid var(--bg-card)'
-                }}>
-                    {user.photo ? (
-                        <img src={user.photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                        <div className="flex items-center justify-center h-full text-4xl">👤</div>
-                    )}
-                </div>
+        <div className="flex flex-col lg:flex-row gap-8 pt-8 pb-20">
 
-                {/* Flag Badge */}
-                <div style={{
-                    position: 'absolute',
-                    bottom: '5px',
-                    right: '5px',
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    overflow: 'hidden',
-                    border: '2px solid var(--bg-dark)',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.5)'
-                }}>
-                    <img
-                        src={getFlagUrl('ma')} // Hardcoded to 'ma' for demo as user probably selected Morocco, or use user.paysOrigine logic
-                        alt="Flag"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+            {/* Left Banner Area (Desktop) */}
+            <div className="lg:w-1/3">
+                <div className="sticky top-8">
+                    <h1 className="text-4xl lg:text-5xl font-black mb-6 leading-tight">
+                        Your Personal <br />
+                        <span className="text-red-600">Locker Room</span>
+                    </h1>
+                    <p className="text-gray-400 mb-8 max-w-sm">
+                        Customize your identity, manage your squad, and represent your colors for World Cup 2030.
+                    </p>
+
+                    <div className="flex -space-x-4 mb-4">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="w-12 h-12 rounded-full border-4 border-[var(--bg-dark)] bg-gray-700 overflow-hidden">
+                                <img src={`https://i.pravatar.cc/150?img=${i + 10}`} alt="Fan" />
+                            </div>
+                        ))}
+                        <div className="w-12 h-12 rounded-full border-4 border-[var(--bg-dark)] bg-red-600 flex items-center justify-center font-bold text-xs">
+                            +4K
+                        </div>
+                    </div>
+                    <div className="flex gap-1 text-red-500 mb-8">
+                        <Star size={16} fill="currentColor" />
+                        <Star size={16} fill="currentColor" />
+                        <Star size={16} fill="currentColor" />
+                        <Star size={16} fill="currentColor" />
+                        <Star size={16} fill="currentColor" />
+                        <span className="text-gray-500 text-sm ml-2">Trusted by fans worldwide</span>
+                    </div>
                 </div>
             </div>
 
-            <h2 className="text-xl font-bold">{user.nom} {user.prenom}</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>Supporter: <span style={{ color: 'var(--accent-primary)' }}>{user.equipe || 'Maroc'}</span></p>
+            {/* Right Profile Card */}
+            <div className="flex-1">
+                <div className="card relative overflow-hidden">
+                    {/* Header/Banner BG */}
+                    <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-red-900 to-black opacity-50"></div>
 
-            {/* Stats / Info */}
-            <div className="w-full grid grid-cols-2 gap-4 mt-8 mb-8 text-center" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div className="card text-center p-4">
-                    <div className="text-sm text-gray-400">Ville</div>
-                    <div className="font-bold">{user.ville || 'Non renseigné'}</div>
+                    <div className="relative pt-16 px-4 flex flex-col items-center mb-8">
+                        <div className="relative mb-4">
+                            <div className="w-32 h-32 rounded-full border-4 border-[var(--bg-card)] bg-gray-800 overflow-hidden shadow-2xl">
+                                {user.photo ? <img src={user.photo} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-4xl">👤</div>}
+                            </div>
+                            <div className="absolute bottom-2 right-2 w-8 h-8 rounded-full border-2 border-[var(--bg-card)] overflow-hidden shadow-lg">
+                                <img src={getFlagUrl('ma')} className="w-full h-full object-cover" />
+                            </div>
+                            <Link to="/profile/edit" className="absolute bottom-2 left-2 p-2 bg-red-600 rounded-full text-white shadow-lg hover:bg-red-500 transition-colors">
+                                <Edit size={14} />
+                            </Link>
+                        </div>
+
+                        <h2 className="text-2xl font-bold mb-1">{user.nom} {user.prenom}</h2>
+                        <div className="flex items-center gap-4 text-sm">
+                            <span className="flex items-center gap-1 text-gray-400"><MapPin size={14} /> {user.ville}</span>
+                            <span className="px-2 py-0.5 rounded bg-green-900/50 text-green-400 font-bold text-xs border border-green-800">PRO MEMBER</span>
+                        </div>
+                    </div>
+
+                    {/* Fields Section */}
+                    <div className="space-y-6">
+                        <div>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-bold flex items-center gap-2 text-red-500">
+                                    <Shield size={18} /> Personal Info
+                                </h3>
+                                <Link to="/profile/edit" className="text-xs text-gray-500 hover:text-white">Edit Details</Link>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                    <div className="text-xs text-gray-500 mb-1">Pseudo</div>
+                                    <div className="font-semibold">{user.nom}_{user.prenom}</div>
+                                </div>
+                                <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                    <div className="text-xs text-gray-500 mb-1">City</div>
+                                    <div className="font-semibold">{user.ville}</div>
+                                </div>
+                                <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                    <div className="text-xs text-gray-500 mb-1">Squad Role</div>
+                                    <div className="font-semibold">Captain</div>
+                                </div>
+                                <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                    <div className="text-xs text-gray-500 mb-1">Fan Since</div>
+                                    <div className="font-semibold">2024</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-lg font-bold flex items-center gap-2 text-red-500 mb-4">
+                                <Star size={18} /> Favorite Team
+                            </h3>
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-red-900/40 to-black border border-red-900/30 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="text-3xl">🇲🇦</div>
+                                    <div>
+                                        <div className="font-bold text-lg">Morocco</div>
+                                        <div className="text-xs text-green-400">Atlas Lions • Group F</div>
+                                    </div>
+                                </div>
+                                <button className="text-xs font-bold bg-white/10 px-3 py-1 rounded hover:bg-white/20">VS Stats</button>
+                            </div>
+                        </div>
+
+                        <div className="pt-8 border-t border-white/5">
+                            <Button onClick={handleLogout} variant="secondary" className="w-full border-red-900/50 text-red-500 hover:bg-red-900/10">
+                                <LogOut size={18} className="mr-2" /> Sign Out
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-                <div className="card text-center p-4">
-                    <div className="text-sm text-gray-400">Âge</div>
-                    <div className="font-bold">{user.age || '--'} ans</div>
-                </div>
-            </div>
-
-            <div className="w-full flex flex-col gap-3">
-                <Link to="/profile/edit" className="w-full">
-                    <Button variant="secondary" className="w-full flex justify-center gap-2">
-                        <Edit size={18} /> Modifier le profil
-                    </Button>
-                </Link>
-
-                <Button onClick={handleLogout} variant="secondary" style={{ color: '#ef4444', borderColor: '#7f1d1d' }} className="w-full flex justify-center gap-2">
-                    <LogOut size={18} /> Déconnexion
-                </Button>
             </div>
         </div>
     );
