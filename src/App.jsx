@@ -6,6 +6,13 @@ import Register from './pages/Register';
 import { ProtectedRoute } from './components/UI';
 
 import Dashboard from './pages/Dashboard';
+import Layout from './components/Layout';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
+import GroupsList from './pages/GroupsList';
+import CreateGroup from './pages/CreateGroup';
+import ChatRoom from './pages/ChatRoom';
+import Chatbot from './pages/Chatbot';
 
 // Placeholder for future Dashboard
 // Removed inline component
