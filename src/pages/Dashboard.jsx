@@ -117,12 +117,12 @@ export default function Dashboard() {
                 </div>
 
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold">Community Feed</h3>
+                    <h3 className="text-xl font-bold">Flux communautaire</h3>
                     <button
                         onClick={() => setIsPosting(!isPosting)}
                         className="text-sm text-red-500 cursor-pointer hover:underline font-bold"
                     >
-                        + New Post
+                        + Nouveau message
                     </button>
                 </div>
 
@@ -141,14 +141,14 @@ export default function Dashboard() {
                                 onClick={() => setIsPosting(false)}
                                 className="px-4 py-2 rounded-lg text-gray-400 hover:text-white font-medium"
                             >
-                                Cancel
+                                Annuler
                             </button>
                             <Button
                                 variant="primary"
                                 style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
                                 onClick={handleCreatePost}
                             >
-                                Post
+                                Poste
                             </Button>
                         </div>
                     </div>

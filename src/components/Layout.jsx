@@ -45,9 +45,11 @@ export default function Layout() {
                 </nav>
 
                 <div className="mt-auto">
-                    <Button variant="primary" className="w-full flex items-center gap-2 justify-center">
-                        <Plus size={18} /> New Post
-                    </Button>
+                    <Link to="/dashboard">
+                        <Button variant="primary" className="w-full flex items-center gap-2 justify-center">
+                            <Plus size={18} /> Nouveau message
+                        </Button>
+                    </Link>
                 </div>
             </aside>
 
