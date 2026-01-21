@@ -9,6 +9,7 @@ const KEYS = {
   MESSAGES: 'koora_messages',
   CHATBOT_SESSIONS: 'koora_chatbot_sessions',
   POSTS: 'koora_posts',
+  TICKETS: 'koora_tickets',
 };
 
 // --- DATA INITIALIZATION ---
@@ -233,6 +234,9 @@ export const SystemService = {
     localStorage.removeItem(KEYS.MESSAGES);
     localStorage.removeItem(KEYS.POSTS);
     localStorage.removeItem(KEYS.CHATBOT_SESSIONS);
+    localStorage.removeItem(KEYS.TICKETS);
+    localStorage.removeItem('koora_predictions');
+    localStorage.removeItem('koora_rides');
     window.location.reload();
   }
 };
@@ -287,6 +291,30 @@ export const PostService = {
       return posts[index];
     }
     return null;
+  },
+
+  addComment: (postId, text) => {
+    const currentUser = AuthService.getCurrentUser();
+    const posts = JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+    const index = posts.findIndex(p => p.id === postId);
+    if (index !== -1) {
+      posts[index].comments = (posts[index].comments || 0) + 1;
+
+      // In a real app we would store the actual comment, but for now just count
+      // Let's at least store it in a sub-array if we wanted to display them
+      if (!posts[index].commentList) posts[index].commentList = [];
+      posts[index].commentList.push({
+        id: Date.now(),
+        userId: currentUser.id,
+        userName: currentUser.prenom + ' ' + currentUser.nom,
+        text,
+        createdAt: new Date().toISOString()
+      });
+
+      localStorage.setItem(KEYS.POSTS, JSON.stringify(posts));
+      return posts[index];
+    }
+    return null;
   }
 };
 
@@ -307,10 +335,16 @@ export const PredictionService = {
       matchId,
       homeScore,
       awayScore,
-      points: Math.floor(Math.random() * 10) // Simulated points for demo
+      points: 0 // Points are calculated after match
     });
 
     localStorage.setItem('koora_predictions', JSON.stringify(all));
+  },
+
+  hasPredicted: (userId, matchId) => {
+    const allPredictions = JSON.parse(localStorage.getItem('koora_predictions')) || {};
+    const userPreds = allPredictions[userId] || [];
+    return userPreds.find(p => p.matchId === matchId);
   },
 
   getLeaderboard: () => {
@@ -358,5 +392,31 @@ export const UserService = {
   getUserById: (id) => {
     const users = JSON.parse(localStorage.getItem(KEYS.USERS)) || [];
     return users.find(u => u.id === id) || null;
+  }
+};
+
+export const TicketService = {
+  getTickets: (userId) => {
+    const all = JSON.parse(localStorage.getItem(KEYS.TICKETS)) || [];
+    return all.filter(t => t.userId === userId);
+  },
+
+  buyTicket: (matchId, categoryId, price) => {
+    const currentUser = AuthService.getCurrentUser();
+    const tickets = JSON.parse(localStorage.getItem(KEYS.TICKETS)) || [];
+
+    const newTicket = {
+      id: crypto.randomUUID(),
+      userId: currentUser.id,
+      matchId,
+      categoryId,
+      price,
+      purchaseDate: new Date().toISOString(),
+      status: 'CONFIRMED'
+    };
+
+    tickets.push(newTicket);
+    localStorage.setItem(KEYS.TICKETS, JSON.stringify(tickets));
+    return newTicket;
   }
 };

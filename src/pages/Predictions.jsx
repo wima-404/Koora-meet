@@ -29,6 +29,7 @@ export default function Predictions() {
         if (!p || !p.home || !p.away) return alert("Please enter both scores!");
 
         PredictionService.submitPrediction(user.id, matchId, p.home, p.away);
+        setInputs({ ...inputs }); // Force re-render to update button state
         alert("Prediction Saved! Good luck! 🍀");
     };
 
@@ -69,8 +70,13 @@ export default function Predictions() {
                                     />
                                 </div>
                             </div>
-                            <Button variant="primary" className="w-full" onClick={() => handleSubmit(m.id)}>
-                                Lock Prediction
+                            <Button
+                                variant={PredictionService.hasPredicted(user.id, m.id) ? "secondary" : "primary"}
+                                className="w-full"
+                                onClick={() => handleSubmit(m.id)}
+                                disabled={!!PredictionService.hasPredicted(user.id, m.id)}
+                            >
+                                {PredictionService.hasPredicted(user.id, m.id) ? "Prediction Locked 🔒" : "Lock Prediction"}
                             </Button>
                         </div>
                     ))}
@@ -90,8 +96,8 @@ export default function Predictions() {
                             <div key={u.id} className="flex items-center justify-between p-3 rounded-lg bg-black/20">
                                 <div className="flex items-center gap-3">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${i === 0 ? 'bg-yellow-500 text-black' :
-                                            i === 1 ? 'bg-gray-400 text-black' :
-                                                i === 2 ? 'bg-orange-700 text-white' : 'bg-gray-800'
+                                        i === 1 ? 'bg-gray-400 text-black' :
+                                            i === 2 ? 'bg-orange-700 text-white' : 'bg-gray-800'
                                         }`}>
                                         {u.rank}
                                     </div>

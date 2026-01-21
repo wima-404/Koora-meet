@@ -87,8 +87,9 @@ export default function Dashboard() {
 
     const handleComment = (postId) => {
         const comment = prompt("Add a comment:");
-        if (comment) {
-            alert("Comment added! (Visual update coming soon)");
+        if (comment && comment.trim()) {
+            PostService.addComment(postId, comment);
+            setPosts(PostService.getAllPosts()); // Refresh to show new count
         }
     };
 

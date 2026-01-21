@@ -100,6 +100,23 @@ export const chatbotKb = {
         {
             keywords: ["hello", "hi", "bonjour", "salam"],
             response: "Salam! 👋 Marhba bik (Welcome)! How can I help you navigate World Cup 2030?"
+        },
+
+        {
+            keywords: ["tickets", "buy", "billet", "acheter"],
+            response: "🎟️ You can buy tickets directly in the **Tickets** tab! Prices start from 500 DH. Hurry, they are selling out fast!"
+        },
+        {
+            keywords: ["food", "eat", "manger", "restaurant"],
+            response: "🍽️ **Moroccan Food** is legendary!\n- Try **Couscous** on Fridays.\n- **Tajine** is a must.\n- **Pastilla** for a sweet/savory mix.\n- Best spots: Rick's Café (Casa), Dar Zellij (Marrakech)."
+        },
+        {
+            keywords: ["weather", "meteo", "temperature"],
+            response: "☀️ June/July in Morocco is warm.\n- **Coastal (Casa/Rabat)**: 25-30°C, pleasant breeze.\n- **Inland (Marrakech)**: Can reach 40°C. Bring sunscreen and a hat!"
+        },
+        {
+            keywords: ["emergency", "police", "hopital", "help"],
+            response: "🆘 **Emergency Numbers**:\n- **190**: Police\n- **150**: Ambulance/Fire\n- **177**: Gendarmerie (outside cities)\nStay safe and drink water!"
         }
     ]
 };

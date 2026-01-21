@@ -79,7 +79,7 @@ teamsData.forEach(team => {
             team.players.push({
                 name: `${team.name} Player ${i}`,
                 position: i === 1 || i === 12 || i === 23 ? 'GK' : i < 6 || (i > 12 && i < 17) ? 'DF' : i < 10 || (i > 16 && i < 21) ? 'MF' : 'FW',
-                photo: `https://ui-avatars.com/api/?name=${team.name}+${i}&background=random`
+                photo: `https://i.pravatar.cc/150?u=${team.name}${i}`
             });
         }
     }

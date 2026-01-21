@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Ticket, Calendar, MapPin, Check, Info } from 'lucide-react';
 import { Button } from '../components/UI';
+import { AuthService, TicketService } from '../services/storage';
 
 export default function Tickets() {
     const [selectedCat, setSelectedCat] = useState(null);
@@ -30,8 +31,18 @@ export default function Tickets() {
         { id: 3, name: "Category 3", price: "500 DH", desc: "Behind goals, intense fans.", color: "bg-green-600" },
     ];
 
-    const handleBuy = () => {
-        alert("Payment Gateway Simulation: Processing payment... \n\nSuccess! Tickets sent to your email.");
+
+    const handleBuy = (matchId) => {
+        if (!selectedCat || selectedCat.matchId !== matchId) return alert("Please select a category for this match first.");
+
+        const user = AuthService.getCurrentUser();
+        // Determine price based on selectedCat
+        const category = categories.find(c => c.id === selectedCat.catId);
+
+        if (confirm(`Confirm purchase of ${category.name} ticket for ${category.price}?`)) {
+            TicketService.buyTicket(matchId, category.id, category.price);
+            alert(`Success! Ticket confirmed. \n\nCheck your email: ${user.email} for the QR Code.`);
+        }
     };
 
     return (
@@ -67,10 +78,10 @@ export default function Tickets() {
                                 {categories.map(cat => (
                                     <div
                                         key={cat.id}
-                                        onClick={() => setSelectedCat(cat.id)}
-                                        className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${selectedCat === cat.id
-                                                ? 'border-red-500 bg-red-500/10'
-                                                : 'border-white/10 hover:bg-white/5'
+                                        onClick={() => setSelectedCat({ matchId: match.id, catId: cat.id })}
+                                        className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${selectedCat?.matchId === match.id && selectedCat?.catId === cat.id
+                                            ? 'border-red-500 bg-red-500/10'
+                                            : 'border-white/10 hover:bg-white/5'
                                             }`}
                                     >
                                         <div className="flex items-center gap-3">
@@ -88,9 +99,9 @@ export default function Tickets() {
                             <Button
                                 variant="primary"
                                 className="w-full py-4 text-lg"
-                                onClick={handleBuy}
+                                onClick={() => handleBuy(match.id)}
                             >
-                                {selectedCat ? 'Proceed to Checkout' : 'Select a Category'}
+                                {selectedCat?.matchId === match.id ? 'Proceed to Checkout' : 'Select a Category'}
                             </Button>
 
                             <p className="text-center text-xs text-gray-500 mt-4 flex items-center justify-center gap-1">
