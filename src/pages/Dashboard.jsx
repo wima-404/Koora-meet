@@ -1,11 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { AuthService, PostService } from '../services/storage';
+import React, { useState, useEffect } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { PostService, AuthService, NotificationService } from '../services/storage';
 import { Button } from '../components/UI';
-import { Calendar, Users, Flame, ChevronRight, Bell, Plus, Hash } from 'lucide-react';
+import { Search, Bell, Filter, Heart, MessageSquare, Share2, MoreHorizontal, Calendar, Users, Flame, ChevronRight, Hash } from 'lucide-react';
 
 export default function Dashboard() {
-    const user = AuthService.getCurrentUser();
+    // Navigate hook removed as we use declarative <Navigate />
+
+
 
     const MatchCard = () => (
         <div style={{
@@ -63,13 +65,20 @@ export default function Dashboard() {
         </div>
     );
 
-    const [posts, setPosts] = React.useState([]);
-    const [isPosting, setIsPosting] = React.useState(false);
-    const [newPostText, setNewPostText] = React.useState('');
+    const [user, setUser] = useState(AuthService.getCurrentUser());
+    const [posts, setPosts] = useState([]);
+    const [isPosting, setIsPosting] = useState(false);
+    const [newPostText, setNewPostText] = useState('');
+    const [notifications, setNotifications] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    React.useEffect(() => {
-        setPosts(PostService.getAllPosts());
-    }, []);
+    useEffect(() => {
+        if (user) {
+            setIsAdmin(user.email === 'admin@koora.com' || user.role === 'admin');
+            setPosts(PostService.getAllPosts());
+            setNotifications(NotificationService.getNotifications(user.id));
+        }
+    }, [user]);
 
     const handleCreatePost = (e) => {
         e.preventDefault();
@@ -93,18 +102,24 @@ export default function Dashboard() {
         }
     };
 
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
     return (
         <div className="flex flex-col lg:flex-row gap-8 pb-20 pt-8 lg:pt-12">
             {/* Main Content */}
             <div className="flex-1">
                 <header className="flex justify-between items-center mb-8">
                     <div>
-                        <h1 className="text-3xl font-black mb-1">Welcome back, {user?.prenom}! 🦁</h1>
+                        <h1 className="text-3xl font-black mb-1">Welcome back, {user?.prenom}! 🦁🔥</h1>
                         <p className="text-gray-400">Ready for the next match?</p>
                     </div>
                     <button className="p-3 bg-white/5 rounded-full hover:bg-white/10 border border-white/5 transition-colors relative">
                         <Bell size={24} />
-                        <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                        {(notifications || []).filter(n => n && !n.read).length > 0 && (
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                        )}
                     </button>
                 </header>
 
@@ -173,15 +188,17 @@ export default function Dashboard() {
                         No posts yet. Be the first to start the conversation!
                     </div>
                 ) : (
-                    posts.map(post => (
+                    Array.isArray(posts) && posts.filter(p => p && p.id).map(post => (
                         <div key={post.id} className="card hover:bg-white/5 transition-colors mb-4">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-12 h-12 bg-gray-700 rounded-full overflow-hidden border-2 border-red-900">
                                     <img src={post.userPhoto || `https://i.pravatar.cc/150?u=${post.userId}`} alt="User" />
                                 </div>
                                 <div>
-                                    <div className="font-bold">{post.userName}</div>
-                                    <div className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • Fan Zone</div>
+                                    <div className="font-bold">{post.userName || 'Unknown User'}</div>
+                                    <div className="text-xs text-gray-500">
+                                        {post.createdAt ? new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'} • Fan Zone
+                                    </div>
                                 </div>
                             </div>
                             <p className="mb-4 text-gray-300 text-lg">
@@ -193,13 +210,13 @@ export default function Dashboard() {
                                     className="flex items-center gap-2 hover:text-red-500 transition-colors group"
                                 >
                                     <Flame size={18} className="group-hover:text-red-500 transition-colors" />
-                                    {post.likes} Hype
+                                    {post.likes || 0} Hype
                                 </button>
                                 <button
                                     onClick={() => handleComment(post.id)}
                                     className="flex items-center gap-2 hover:text-blue-500 transition-colors"
                                 >
-                                    <Hash size={18} /> {post.comments} Comments
+                                    <Hash size={18} /> {post.comments || 0} Comments
                                 </button>
                             </div>
                         </div>

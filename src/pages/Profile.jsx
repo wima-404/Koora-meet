@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthService } from '../services/storage';
 import { Button } from '../components/UI';
 import { LogOut, Edit, MapPin, Shield, Star } from 'lucide-react';
@@ -8,7 +8,12 @@ export default function Profile() {
     const navigate = useNavigate();
     const user = AuthService.getCurrentUser();
 
-    if (!user) return null;
+
+    // Defensive check: if user data corrupted/missing, force logout cleanly
+    if (!user || typeof user !== 'object') {
+        AuthService.logout();
+        return <Navigate to="/login" replace />;
+    }
 
     const handleLogout = () => {
         AuthService.logout();
@@ -128,7 +133,7 @@ export default function Profile() {
                                 </div>
                                 <div className="bg-black/20 p-3 rounded-lg border border-white/5">
                                     <div className="text-xs text-gray-500 mb-1">Fan Since</div>
-                                    <div className="font-semibold">{new Date(user.createdAt).getFullYear() || '2024'}</div>
+                                    <div className="font-semibold">{(user.createdAt && !isNaN(new Date(user.createdAt))) ? new Date(user.createdAt).getFullYear() : '2024'}</div>
                                 </div>
                             </div>
                         </div>

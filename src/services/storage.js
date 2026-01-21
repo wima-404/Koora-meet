@@ -12,6 +12,18 @@ const KEYS = {
   TICKETS: 'koora_tickets',
 };
 
+// Helper for safe JSON parsing
+const safeParse = (key, fallback) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    console.warn(`Error parsing ${key}, resetting to fallback.`, e);
+    localStorage.removeItem(key);
+    return fallback;
+  }
+};
+
 // --- DATA INITIALIZATION ---
 const initStorage = () => {
   if (!localStorage.getItem(KEYS.USERS)) localStorage.setItem(KEYS.USERS, JSON.stringify([]));
@@ -24,7 +36,7 @@ const initStorage = () => {
 export const AuthService = {
   register: (userData) => {
     initStorage();
-    const users = JSON.parse(localStorage.getItem(KEYS.USERS));
+    const users = safeParse(KEYS.USERS, []);
 
     if (users.find(u => u.email === userData.email)) {
       throw new Error('Email déjà utilisé');
@@ -46,7 +58,7 @@ export const AuthService = {
 
   login: (email, password) => {
     initStorage();
-    const users = JSON.parse(localStorage.getItem(KEYS.USERS));
+    const users = safeParse(KEYS.USERS, []);
     const user = users.find(u => u.email === email && u.password === password);
 
     if (!user) {
@@ -62,14 +74,15 @@ export const AuthService = {
   },
 
   getCurrentUser: () => {
-    return JSON.parse(localStorage.getItem(KEYS.CURRENT_USER));
+    const user = safeParse(KEYS.CURRENT_USER, null);
+    return (user && typeof user === 'object') ? user : null;
   },
 
   updateProfile: (updatedData) => {
     const currentUser = AuthService.getCurrentUser();
     if (!currentUser) throw new Error("Non connecté");
 
-    const users = JSON.parse(localStorage.getItem(KEYS.USERS));
+    const users = safeParse(KEYS.USERS, []);
     const index = users.findIndex(u => u.id === currentUser.id);
 
     if (index !== -1) {
@@ -90,7 +103,7 @@ export const GroupService = {
     // Validation: Max 4 participants including creator? Or just max setting?
     // User requested "Max participants (2 à 4)"
 
-    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const groups = safeParse(KEYS.GROUPS, []);
     const newGroup = {
       id: crypto.randomUUID(),
       creatorId: currentUser.id,
@@ -104,12 +117,13 @@ export const GroupService = {
   },
 
   getAllGroups: () => {
-    return JSON.parse(localStorage.getItem(KEYS.GROUPS)) || [];
+    const groups = safeParse(KEYS.GROUPS, []);
+    return Array.isArray(groups) ? groups : [];
   },
 
   joinGroup: (groupId) => {
     const currentUser = AuthService.getCurrentUser();
-    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const groups = safeParse(KEYS.GROUPS, []);
     const index = groups.findIndex(g => g.id === groupId);
 
     if (index === -1) throw new Error("Groupe non trouvé");
@@ -129,7 +143,7 @@ export const GroupService = {
 
   leaveGroup: (groupId) => {
     const currentUser = AuthService.getCurrentUser();
-    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const groups = safeParse(KEYS.GROUPS, []);
     const index = groups.findIndex(g => g.id === groupId);
 
     if (index === -1) throw new Error("Groupe non trouvé");
@@ -139,7 +153,7 @@ export const GroupService = {
   },
 
   kickMember: (groupId, userId) => {
-    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const groups = safeParse(KEYS.GROUPS, []);
     const index = groups.findIndex(g => g.id === groupId);
     if (index === -1) throw new Error("Group not found");
 
@@ -160,7 +174,7 @@ export const ChatService = {
     }
 
     const currentUser = AuthService.getCurrentUser();
-    const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES));
+    const messages = safeParse(KEYS.MESSAGES, []);
 
     // Use senderOverride if provided (for simulation), otherwise use current user
     const sender = senderOverride || {
@@ -279,7 +293,8 @@ export const PostService = {
   },
 
   getAllPosts: () => {
-    return JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+    const posts = safeParse(KEYS.POSTS, []);
+    return Array.isArray(posts) ? posts : [];
   },
 
   likePost: (postId) => {
@@ -418,5 +433,95 @@ export const TicketService = {
     tickets.push(newTicket);
     localStorage.setItem(KEYS.TICKETS, JSON.stringify(tickets));
     return newTicket;
+  }
+};
+// --- FRIEND SERVICE ---
+export const FriendService = {
+  getFriends: (userId) => {
+    // Returns list of user IDs
+    const friendsMap = safeParse('koora_friends', {});
+    return friendsMap[userId] || [];
+  },
+
+  sendRequest: (fromId, toId) => {
+    if (fromId === toId) throw new Error("Cannot add yourself");
+
+    let requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
+    if (requests.find(r => r.from === fromId && r.to === toId)) {
+      throw new Error("Request already sent");
+    }
+
+    requests.push({ id: Date.now(), from: fromId, to: toId, status: 'pending' });
+    localStorage.setItem('koora_friend_requests', JSON.stringify(requests));
+
+    // Notify receiver
+    NotificationService.notify(toId, "New Friend Request", `${fromId} sent you a request!`, "friend");
+  },
+
+  getRequests: (userId) => {
+    const requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
+    return requests.filter(r => r.to === userId && r.status === 'pending');
+  },
+
+  acceptRequest: (requestId) => {
+    let requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
+    const index = requests.findIndex(r => r.id === requestId);
+
+    if (index !== -1) {
+      requests[index].status = 'accepted';
+      localStorage.setItem('koora_friend_requests', JSON.stringify(requests));
+
+      const { from, to } = requests[index];
+
+      // Add to both lists
+      let friends = JSON.parse(localStorage.getItem('koora_friends')) || {};
+      if (!friends[from]) friends[from] = [];
+      if (!friends[to]) friends[to] = [];
+
+      if (!friends[from].includes(to)) friends[from].push(to);
+      if (!friends[to].includes(from)) friends[to].push(from);
+
+      localStorage.setItem('koora_friends', JSON.stringify(friends));
+
+      // Notify sender
+      NotificationService.notify(from, "Request Accepted", "You are now friends!", "success");
+    }
+  }
+};
+
+// --- NOTIFICATION SERVICE ---
+export const NotificationService = {
+  getNotifications: (userId) => {
+    const all = safeParse('koora_notifications', {});
+    // handle case where 'all' might be null or not object
+    if (!all || typeof all !== 'object') return [];
+    const userNotifs = all[userId];
+    return Array.isArray(userNotifs) ? userNotifs : [];
+  },
+
+  notify: (userId, title, message, type = 'info') => {
+    let all = JSON.parse(localStorage.getItem('koora_notifications')) || {};
+    if (!all[userId]) all[userId] = [];
+
+    all[userId].unshift({
+      id: Date.now(),
+      title,
+      message,
+      type,
+      read: false,
+      date: new Date().toISOString()
+    });
+
+    // Keep only last 20
+    all[userId] = all[userId].slice(0, 20);
+    localStorage.setItem('koora_notifications', JSON.stringify(all));
+  },
+
+  markRead: (userId) => {
+    let all = JSON.parse(localStorage.getItem('koora_notifications')) || {};
+    if (all[userId]) {
+      all[userId] = all[userId].map(n => ({ ...n, read: true }));
+      localStorage.setItem('koora_notifications', JSON.stringify(all));
+    }
   }
 };

@@ -125,6 +125,32 @@ export default function Settings() {
                 />
             </SettingSection>
 
+            {/* Developer Options */}
+            <SettingSection title="Developer Zone">
+                <SettingItem
+                    icon={Shield}
+                    label="Toggle Admin Mode"
+                    type="button"
+                    onClick={() => {
+                        const user = AuthService.getCurrentUser();
+                        const newRole = user.role === 'admin' ? 'user' : 'admin';
+                        user.role = newRole;
+                        localStorage.setItem('koora_current_user', JSON.stringify(user));
+
+                        // Update in users list too
+                        const users = JSON.parse(localStorage.getItem('koora_users'));
+                        const idx = users.findIndex(u => u.id === user.id);
+                        if (idx !== -1) {
+                            users[idx].role = newRole;
+                            localStorage.setItem('koora_users', JSON.stringify(users));
+                        }
+
+                        alert(`Admin Mode: ${newRole === 'admin' ? 'ON ✅' : 'OFF ❌'}\nReloading app...`);
+                        window.location.reload();
+                    }}
+                />
+            </SettingSection>
+
             <p className="text-center text-gray-600 text-xs mt-8">
                 Koora Meet v1.0.0 (Beta) • World Cup 2030 Edition
             </p>

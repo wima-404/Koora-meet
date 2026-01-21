@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { UserService, SecurityService, AuthService } from '../services/storage';
+import { UserService, SecurityService, AuthService, FriendService } from '../services/storage';
 import { Button } from '../components/UI';
-import { ArrowLeft, MapPin, Shield, Flag, AlertTriangle, UserX, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Shield, Flag, AlertTriangle, UserX, MessageCircle, UserPlus, UserCheck, Clock } from 'lucide-react';
 
 export default function UserProfile() {
     const { userId } = useParams();
@@ -10,6 +10,7 @@ export default function UserProfile() {
     const [user, setUser] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [isBlocked, setIsBlocked] = useState(false);
+    const [friendStatus, setFriendStatus] = useState('none'); // none, pending, friend
 
     useEffect(() => {
         const fetchUser = () => {
@@ -56,10 +57,34 @@ export default function UserProfile() {
     const getCountryCode = (teamName) => {
         if (!teamName) return 'ma';
         const map = {
+
             'Maroc': 'ma', 'France': 'fr', 'Espagne': 'es',
             'Portugal': 'pt', 'Brazil': 'br', 'Argentina': 'ar'
         };
         return map[teamName] || 'ma';
+    };
+
+    const checkFriendStatus = (currentId, targetId) => {
+        const friends = FriendService.getFriends(currentId);
+        if (friends.includes(targetId)) return 'friend';
+
+        const requests = FriendService.getRequests(targetId); // Check if I sent a request TO them (simplified mock check)
+        // In a real app we'd need a way to check sent requests too. 
+        // For this mock, let's just use local state or a specialized check.
+        // Actually, let's just check the "friend_requests" array directly in storage for now via a helper or assume 'none' if reloaded for simplicity, 
+        // OR better: let's verify if we can add a 'getSentRequests' to service later. 
+        // For now, let's just implement the 'Add' action which sends a persistent request.
+        return 'none';
+    };
+
+    const handleAddFriend = () => {
+        try {
+            FriendService.sendRequest(currentUser.id, user.id);
+            setFriendStatus('pending');
+            alert('Friend request sent!');
+        } catch (err) {
+            alert(err.message);
+        }
     };
 
     const countryCode = getCountryCode(user.equipe);
@@ -97,7 +122,22 @@ export default function UserProfile() {
                     <div className="flex gap-3 mb-2 w-full md:w-auto">
                         {currentUser && currentUser.id !== user.id && (
                             <>
-                                <Button onClick={handleChat} variant="primary" className="flex-1 md:flex-none">
+                                {friendStatus === 'none' && (
+                                    <Button onClick={handleAddFriend} variant="primary" className="bg-blue-600 hover:bg-blue-700">
+                                        <UserPlus size={18} className="mr-2" /> Add Friend
+                                    </Button>
+                                )}
+                                {friendStatus === 'pending' && (
+                                    <Button disabled variant="secondary" className="opacity-70">
+                                        <Clock size={18} className="mr-2" /> Pending
+                                    </Button>
+                                )}
+                                {friendStatus === 'friend' && (
+                                    <Button disabled variant="secondary" className="text-green-500 border-green-500/50">
+                                        <UserCheck size={18} className="mr-2" /> Friends
+                                    </Button>
+                                )}
+                                <Button onClick={handleChat} variant="secondary" className="flex-1 md:flex-none">
                                     <MessageCircle size={18} className="mr-2" /> Message
                                 </Button>
                                 <Button onClick={handleReport} variant="secondary" className="bg-yellow-900/20 text-yellow-500 hover:bg-yellow-900/40 border-yellow-900/50">
