@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, User, Users, MessageCircle, Settings, Plus, LogOut, Shield, BarChart2, Search, Ticket } from 'lucide-react';
+import { Home, User, Users, MessageCircle, Settings, Plus, LogOut, Shield, BarChart2, Search, Ticket, Trophy, Car } from 'lucide-react';
 import { Button } from './UI';
 
 export default function Layout() {
@@ -41,6 +41,8 @@ export default function Layout() {
                     <SidebarItem to="/groups" icon={Users} label="Groups" />
                     <SidebarItem to="/search" icon={Search} label="Find Fans" />
                     <SidebarItem to="/tickets" icon={Ticket} label="Get Tickets" />
+                    <SidebarItem to="/predictions" icon={Trophy} label="Win Prizes" />
+                    <SidebarItem to="/carpool" icon={Car} label="Koora Ride" />
                     <div className="pt-4 border-t border-white/5 mt-4">
                         <SidebarItem to="/settings" icon={Settings} label="Settings" />
                     </div>

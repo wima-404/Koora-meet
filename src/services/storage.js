@@ -290,6 +290,65 @@ export const PostService = {
   }
 };
 
+export const PredictionService = {
+  getPredictions: (userId) => {
+    const allPredictions = JSON.parse(localStorage.getItem('koora_predictions')) || {};
+    return allPredictions[userId] || [];
+  },
+
+  submitPrediction: (userId, matchId, homeScore, awayScore) => {
+    const all = JSON.parse(localStorage.getItem('koora_predictions')) || {};
+    if (!all[userId]) all[userId] = [];
+
+    // Remove existing if any
+    all[userId] = all[userId].filter(p => p.matchId !== matchId);
+
+    all[userId].push({
+      matchId,
+      homeScore,
+      awayScore,
+      points: Math.floor(Math.random() * 10) // Simulated points for demo
+    });
+
+    localStorage.setItem('koora_predictions', JSON.stringify(all));
+  },
+
+  getLeaderboard: () => {
+    // Mock Leaderboard
+    return [
+      { id: 1, name: "Amine M.", points: 120, rank: 1 },
+      { id: 2, name: "Sarah K.", points: 115, rank: 2 },
+      { id: 3, name: "Youssef B.", points: 98, rank: 3 },
+    ];
+  }
+};
+
+export const CarpoolService = {
+  getRides: () => {
+    return JSON.parse(localStorage.getItem('koora_rides')) || [
+      { id: 1, driver: "Omar", from: "Casablanca", to: "Tangier", date: "2030-06-14", time: "09:00", price: "150 DH", seats: 2 },
+      { id: 2, driver: "Leila", from: "Rabat", to: "Marrakech", date: "2030-06-15", time: "14:00", price: "200 DH", seats: 3 },
+    ];
+  },
+
+  addRide: (ride) => {
+    const rides = CarpoolService.getRides();
+    rides.push({ ...ride, id: Date.now(), seats: 4 }); // Default 4 seats
+    localStorage.setItem('koora_rides', JSON.stringify(rides));
+  },
+
+  bookSeat: (rideId) => {
+    const rides = CarpoolService.getRides();
+    const index = rides.findIndex(r => r.id === rideId);
+    if (index !== -1 && rides[index].seats > 0) {
+      rides[index].seats -= 1;
+      localStorage.setItem('koora_rides', JSON.stringify(rides));
+      return true;
+    }
+    return false;
+  }
+};
+
 // --- USER SERVICE ---
 export const UserService = {
   getAllUsers: () => {

@@ -21,6 +21,8 @@ import PrivateChat from './pages/PrivateChat';
 import SearchProfiles from './pages/SearchProfiles';
 import UserProfile from './pages/UserProfile';
 import Tickets from './pages/Tickets';
+import Predictions from './pages/Predictions';
+import Carpool from './pages/Carpool';
 
 // Placeholder for future Dashboard
 // Removed inline component
@@ -54,6 +56,8 @@ function App() {
           <Route path="/search" element={<SearchProfiles />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
           <Route path="/tickets" element={<Tickets />} />
+          <Route path="/predictions" element={<Predictions />} />
+          <Route path="/carpool" element={<Carpool />} />
         </Route>
 
         {/* Catch all */}
