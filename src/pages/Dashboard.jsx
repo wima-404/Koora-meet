@@ -80,6 +80,18 @@ export default function Dashboard() {
         setPosts(PostService.getAllPosts());
     };
 
+    const handleLike = (postId) => {
+        PostService.likePost(postId);
+        setPosts(PostService.getAllPosts());
+    };
+
+    const handleComment = (postId) => {
+        const comment = prompt("Add a comment:");
+        if (comment) {
+            alert("Comment added! (Visual update coming soon)");
+        }
+    };
+
     return (
         <div className="flex flex-col lg:flex-row gap-8 pb-20 pt-8 lg:pt-12">
             {/* Main Content */}
@@ -175,8 +187,19 @@ export default function Dashboard() {
                                 {post.text}
                             </p>
                             <div className="flex gap-6 text-sm text-gray-400 border-t border-white/5 pt-4">
-                                <button className="flex items-center gap-2 hover:text-red-500 transition-colors"><Flame size={18} /> {post.likes} Hype</button>
-                                <button className="flex items-center gap-2 hover:text-blue-500 transition-colors"><Hash size={18} /> {post.comments} Comments</button>
+                                <button
+                                    onClick={() => handleLike(post.id)}
+                                    className="flex items-center gap-2 hover:text-red-500 transition-colors group"
+                                >
+                                    <Flame size={18} className="group-hover:text-red-500 transition-colors" />
+                                    {post.likes} Hype
+                                </button>
+                                <button
+                                    onClick={() => handleComment(post.id)}
+                                    className="flex items-center gap-2 hover:text-blue-500 transition-colors"
+                                >
+                                    <Hash size={18} /> {post.comments} Comments
+                                </button>
                             </div>
                         </div>
                     ))

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AuthService } from '../services/storage';
 import { Send, Bot, Sparkles } from 'lucide-react';
+import { allTopics } from '../data/chatbotData';
 
 export default function Chatbot() {
     const currentUser = AuthService.getCurrentUser();
@@ -47,153 +48,45 @@ export default function Chatbot() {
     };
 
     const processInput = (text) => {
+        // Normalize input
+        const lowerInput = text.toLowerCase();
+
+        // 1. Check for Menu Navigation (Legacy support for buttons)
         if (text === 'START_MAIN') {
-            setTimeout(() => {
-                setStep('MAIN_MENU');
-                addBotMessage("Comment puis-je vous aider aujourd'hui ? 🏆", [
-                    { label: "🏟️ Stade du match", value: "1" },
-                    { label: "👕 Boutiques", value: "2" },
-                    { label: "🎉 Fan Zones", value: "3" },
-                    { label: "📍 Activités", value: "4" },
-                    { label: "🎟️ Billetterie", value: "5" },
-                    { label: "🚆 Transport", value: "6" },
-                    { label: "🏨 Hébergement", value: "7" },
-                    { label: "🚑 Urgences", value: "8" },
-                    { label: "💬 Langue", value: "9" },
-                    { label: "☀️ Météo", value: "10" },
-                    { label: "📜 Règles Stade", value: "11" },
-                    { label: "🍽️ Restaurants", value: "12" },
-                    { label: "📱 WiFi/Internet", value: "13" },
-                    { label: "🎁 Souvenirs", value: "14" }
-                ]);
-            }, 500);
-            return;
-        }
-
-        if (step === 'MAIN_MENU') {
-            let response = "";
-            let nextOptions = [];
-
-            switch (text) {
-                case "1":
-                    response = "📍 Le prochain match du Maroc se jouera au **Grand Stade de Casablanca** à 20h00.";
-                    break;
-                case "2":
-                    response = "🛍️ Vous trouverez les maillots officiels au **Morocco Mall** (2ème étage) ou à la boutique du stade.";
-                    break;
-                case "3":
-                    response = "🎉 Les meilleures Fan Zones sont : \n1. Corniche Ain Diab\n2. Place Mohammed V\n3. Parc de la Ligue Arabe.";
-                    break;
-                case "4":
-                    response = "Je peux vous recommander des activités selon vos goûts :";
-                    nextOptions = [
-                        { label: "🏛️ Culture & Histoire", value: "A" },
-                        { label: "🥘 Gastronomie", value: "B" },
-                        { label: "⚽ Sport & Aventure", value: "C" }
-                    ];
-                    setStep('ACTIVITIES');
-                    break;
-                case "5":
-                    response = "🎟️ Les billets sont en vente sur le site officiel de la FIFA ou via l'application 'Koora Tickets'.\n\nPrix à partir de 200 DH.";
-                    break;
-                case "6":
-                    response = "Pour quelle ville cherchez-vous des infos transport ?";
-                    nextOptions = [
-                        { label: "Casablanca", value: "CASA" },
-                        { label: "Rabat", value: "RABAT" },
-                        { label: "Tanger", value: "TANGER" }
-                    ];
-                    setStep('TRANSPORT');
-                    break;
-                case "7":
-                    response = "🏨 Nous avons des partenariats avec :\n- Hotel Kenzi Tower\n- Onomo Hotel\n- Sofitel Tour Blanche.\n\nUtilisez le code 'KOORA2030' pour -15% !";
-                    break;
-                case "8":
-                    response = "🚑 **Urgences** : 190 (Police), 15 (Pompiers/Ambulance).\n📞 **Ambassades** :\n- France : +212 537 68 97 00\n- Espagne : +212 537 63 39 00";
-                    break;
-                case "9":
-                    response = "🇲🇦 Quelques mots en Darija :\n- Bonjour : Salam\n- Merci : Choukran\n- Ça va ? : Labass ?\n- S'il vous plaît : Afak";
-                    break;
-                case "10":
-                    response = "☀️ Météo Casablanca : 26°C, Ensoleillé.\nRabat : 24°C, Vent léger.";
-                    break;
-                case "11":
-                    response = "📜 **Règles du Stade** :\n- Interdiction de fumée\n- Pas d'objets dangereux\n- Contrôle de sécurité obligatoire\n- Arrivez 1h avant le coup d'envoi";
-                    break;
-                case "12":
-                    response = "🍽️ **Restaurants recommandés** :\n- La Sqala (Médina)\n- Paul (Morocco Mall)\n- Le Cabestan (Front de mer)\n- Al Mounia (Cuisine traditionnelle)";
-                    break;
-                case "13":
-                    response = "📱 **WiFi** : Disponible gratuitement dans les stades et Fan Zones.\nRéseau : 'KOORA_2030_FREE'\nPas de mot de passe requis.";
-                    break;
-                case "14":
-                    response = "🎁 **Souvenirs** :\n- Maillots officiels : Morocco Mall\n- Pin's & Écharpes : Boutiques Fan Zone\n- Artisanat local : Médina Casablanca";
-                    break;
-
-                default:
-                    response = "Je n'ai pas compris. Veuillez choisir une option dans la liste 👇";
-                    nextOptions = [
-                        { label: "🏟️ Stade", value: "1" },
-                        { label: "👕 Boutiques", value: "2" },
-                        { label: "🎉 Fan Zones", value: "3" },
-                        { label: "📍 Activités", value: "4" },
-                        { label: "🎟️ Billets", value: "5" },
-                        { label: "🚆 Transport", value: "6" },
-                        { label: "🏨 Hôtels", value: "7" },
-                        { label: "🚑 Urgences", value: "8" },
-                        { label: "💬 Langue", value: "9" },
-                        { label: "☀️ Météo", value: "10" },
-                        { label: "📜 Règles", value: "11" },
-                        { label: "🍽️ Restau", value: "12" },
-                        { label: "📱 WiFi", value: "13" },
-                        { label: "🎁 Souvenirs", value: "14" }
-                    ];
-            }
-            setTimeout(() => addBotMessage(response, nextOptions), 500);
-            return;
-        }
-
-        if (step === 'ACTIVITIES') {
-            let response = "";
-            switch (text) {
-                case "A": response = "🏛️ Ne manquez pas la **Mosquée Hassan II** et une balade dans l'**Ancienne Médina**."; break;
-                case "B": response = "🥘 Pour un bon tajine, essayez **'Rick's Café'** ou les grillades à **Bab Marrakech**."; break;
-                case "C": response = "⚽ Pourquoi pas un match 5vs5 à **City Foot** ou du surf à **Aïn Diab** ?"; break;
-                default: response = "Choix non reconnu.";
-            }
-            setTimeout(() => {
-                addBotMessage(response);
-                addBotMessage("Autre chose ?", [
-                    { label: "🔄 Menu Principal", value: "START_MAIN" },
-                    { label: "👋 Terminer", value: "END" }
-                ]);
-            }, 500);
             setStep('MAIN_MENU');
+            addBotMessage("Ask me anything! Examples:\n- Tickets info 🎟️\n- Casablanca Stadium 🏟️\n- Morocco Team stats 🇲🇦\n- Where to sleep? 🏨");
             return;
         }
 
-        if (step === 'TRANSPORT') {
-            let response = "";
-            switch (text) {
-                case "CASA": response = "🚆 **Casablanca** : Utilisez le Tramway T1/T2 (Ticket 6 DH) ou les Petits Taxis Rouges (Compteur obligatoire)."; break;
-                case "RABAT": response = "🚆 **Rabat** : Le Tramway relie Salé et Rabat. Taxis bleus disponibles. Gare Rabat-Agdal pour le TGV."; break;
-                case "TANGER": response = "🚆 **Tanger** : Taxis bleus ciel. Al-Boraq relie Casablanca en 2h10."; break;
-                default: response = "Ville non reconnue.";
+        // 2. Smart Search in KB
+        // Simple scoring: count how many keywords match
+        let bestMatch = null;
+        let maxScore = 0;
+
+        allTopics.forEach(topic => {
+            let score = 0;
+            topic.keywords.forEach(kw => {
+                if (lowerInput.includes(kw)) score += 2; // Exact match
+            });
+
+            if (score > maxScore) {
+                maxScore = score;
+                bestMatch = topic;
             }
-            setTimeout(() => {
-                addBotMessage(response);
-                addBotMessage("Autre chose ?", [
-                    { label: "🔄 Menu Principal", value: "START_MAIN" },
-                    { label: "👋 Terminer", value: "END" }
-                ]);
-            }, 500);
-            setStep('MAIN_MENU');
+        });
+
+        if (bestMatch && maxScore > 0) {
+            setTimeout(() => addBotMessage(bestMatch.response), 500);
             return;
         }
 
-        if (text === "END") {
-            setTimeout(() => addBotMessage("Bon match ! Allez le Maroc ! 🇲🇦⚽"), 500);
-        }
+        // 3. Fallback / Default
+        const fallbacks = [
+            "I'm learning more every day! Could you rephrase that? 🤔",
+            "Not sure about that one yet. Try asking about 'Tickets', 'Stadiums', or 'Teams'.",
+            "My scout report doesn't cover that. Ask me about World Cup 2030 cities! 🌍"
+        ];
+        setTimeout(() => addBotMessage(fallbacks[Math.floor(Math.random() * fallbacks.length)]), 500);
     };
 
     return (

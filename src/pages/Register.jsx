@@ -138,7 +138,8 @@ export default function Register() {
                             <div className="flex gap-3">
                                 <SelectionCard icon={User} label="Solo" value="Solo" />
                                 <SelectionCard icon={Users} label="Friends" value="Friends" />
-                                <SelectionCard icon={GlassWater} label="Party" value="Party" />
+                                <SelectionCard icon={GlassWater} label="Couple" value="Couple" />
+                                <SelectionCard icon={Users} label="Family" value="Family" />
                             </div>
                         </div>
 

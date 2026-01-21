@@ -134,17 +134,33 @@ export default function ChatRoom() {
                             { name: 'Daniel', status: 'Vamos! 🎾', img: 12, isOnline: true },
                             { name: 'Maria', status: 'Away 2m', img: 5, isOnline: false },
                         ].map((member, i) => (
-                            <div key={i} className={`flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer ${member.isOnline ? '' : 'opacity-50'}`}>
+                            <div key={i} className={`flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group/member ${member.isOnline ? '' : 'opacity-50'}`}>
                                 <div className="relative">
                                     <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
                                         <img src={`https://i.pravatar.cc/150?img=${member.img}`} alt={member.name} />
                                     </div>
                                     {member.isOnline && <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[var(--bg-card)]"></div>}
                                 </div>
-                                <div>
+                                <div className="flex-1">
                                     <div className="font-bold text-sm">{member.name}</div>
                                     <div className={`text-xs ${member.name === 'Luisita' ? 'text-red-500 font-bold' : 'text-gray-500'}`}>{member.status}</div>
                                 </div>
+
+                                {/* Kick Button (Only for Creator) - Simulated check as these match members aren't real storage users yet */}
+                                {group.creatorId === currentUser.id && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (confirm(`Remove ${member.name} from the group?`)) {
+                                                alert("Member removed (Simulated for this mock list)");
+                                            }
+                                        }}
+                                        className="opacity-0 group-hover/member:opacity-100 p-1 hover:bg-red-500/20 text-red-500 rounded transition-all"
+                                        title="Kick User"
+                                    >
+                                        <span className="text-xs font-bold">✕</span>
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>

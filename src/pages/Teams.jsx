@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, MapPin } from 'lucide-react';
+import { teamsData } from '../data/teamsData';
+import { Link } from 'react-router-dom';
 
 export default function Teams() {
-    const teams = [
-        { id: 'mar', name: 'Morocco', group: 'A', ranking: 11, color: 'from-red-600 to-green-600', code: 'MA' },
-        { id: 'por', name: 'Portugal', group: 'A', ranking: 6, color: 'from-red-700 to-green-700', code: 'PT' },
-        { id: 'esp', name: 'Spain', group: 'A', ranking: 8, color: 'from-yellow-500 to-red-600', code: 'ES' },
-        { id: 'bra', name: 'Brazil', group: 'B', ranking: 3, color: 'from-yellow-400 to-green-600', code: 'BR' },
-        { id: 'fra', name: 'France', group: 'B', ranking: 2, color: 'from-blue-600 to-red-500', code: 'FR' },
-        { id: 'arg', name: 'Argentina', group: 'C', ranking: 1, color: 'from-cyan-400 to-white', code: 'AR' },
-        { id: 'ger', name: 'Germany', group: 'C', ranking: 16, color: 'from-white to-black', code: 'DE' },
-        { id: 'sen', name: 'Senegal', group: 'B', ranking: 18, color: 'from-green-600 to-yellow-500', code: 'SN' },
-    ];
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredTeams = teamsData.filter(team =>
+        team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        team.code.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <div className="pb-24 pt-8">
@@ -24,26 +22,32 @@ export default function Teams() {
                     <input
                         className="w-full bg-[var(--bg-input)] border border-white/5 rounded-full py-3 pl-12 pr-4 text-white focus:outline-none focus:border-red-500 transition-colors"
                         placeholder="Search for a nation..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </header>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {teams.map(team => (
-                    <div
+                {filteredTeams.map(team => (
+                    <Link
                         key={team.id}
-                        onClick={() => window.location.href = `/teams/${team.id}`} // Using href force for demo or useNavigate if available. Better refactor to useLink
-                        className="card group hover:border-red-500/50 transition-all cursor-pointer relative overflow-hidden"
+                        to={`/teams/${team.id}`}
+                        className="card group hover:border-red-500/50 transition-all cursor-pointer relative overflow-hidden block"
                     >
                         {/* Background Gradient */}
-                        <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${team.color} opacity-20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:opacity-40 transition-opacity`}></div>
+                        <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${team.colors} opacity-20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:opacity-40 transition-opacity`}></div>
 
                         <div className="flex justify-between items-start mb-6 relative">
                             <div className="w-16 h-16 rounded-full bg-gray-800 border-4 border-[var(--bg-card)] shadow-xl flex items-center justify-center text-2xl overflow-hidden">
                                 <img
-                                    src={`https://flagcdn.com/w160/${team.code.toLowerCase()}.png`}
+                                    src={`https://flagcdn.com/w160/${team.code.toLowerCase().replace('gb-eng', 'gb-eng').replace('gb-wls', 'gb-wls')}.png`} // Handle special codes if any, flagcdn uses lower case iso codes
                                     alt={team.name}
                                     className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = `https://ui-avatars.com/api/?name=${team.code}&background=random`;
+                                    }}
                                 />
                             </div>
                             <span className="text-xs font-bold bg-white/5 px-2 py-1 rounded text-gray-400">GRP {team.group}</span>
@@ -62,7 +66,7 @@ export default function Teams() {
                             </div>
                             <span className="text-red-500 font-bold text-xs uppercase group-hover:underline">View Squad</span>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

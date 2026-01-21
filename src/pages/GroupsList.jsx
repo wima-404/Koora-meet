@@ -63,13 +63,28 @@ export default function GroupsList() {
                         onChange={e => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide items-center">
+                    <div className="relative">
+                        <select
+                            className="appearance-none bg-[var(--bg-input)] border border-white/5 rounded-full py-4 pl-6 pr-10 text-white font-bold focus:outline-none focus:border-red-500 cursor-pointer"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
+                        >
+                            <option value="">All Teams</option>
+                            <option value="Maroc">Morocco 🇲🇦</option>
+                            <option value="France">France 🇫🇷</option>
+                            <option value="Spain">Spain 🇪🇸</option>
+                            <option value="Portugal">Portugal 🇵🇹</option>
+                            <option value="Brazil">Brazil 🇧🇷</option>
+                            <option value="Argentina">Argentina 🇦🇷</option>
+                        </select>
+                        <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" />
+                    </div>
+
                     <button className="flex items-center gap-2 px-6 py-4 rounded-full bg-[var(--bg-input)] border border-white/5 text-gray-400 hover:text-white whitespace-nowrap font-bold">
-                        <Flag size={18} /> Morocco <ChevronDown size={14} />
+                        <MapPin size={18} /> Location <ChevronDown size={14} />
                     </button>
-                    <button className="flex items-center gap-2 px-6 py-4 rounded-full bg-[var(--bg-input)] border border-white/5 text-gray-400 hover:text-white whitespace-nowrap font-bold">
-                        <MapPin size={18} /> Travel & Escape <ChevronDown size={14} />
-                    </button>
+
                     <Button variant="primary" style={{ borderRadius: '9999px', padding: '1rem 2rem' }}>
                         Search
                     </Button>

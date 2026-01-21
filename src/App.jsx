@@ -18,6 +18,9 @@ import Stats from './pages/Stats';
 import Teams from './pages/Teams';
 import TeamDetails from './pages/TeamDetails';
 import PrivateChat from './pages/PrivateChat';
+import SearchProfiles from './pages/SearchProfiles';
+import UserProfile from './pages/UserProfile';
+import Tickets from './pages/Tickets';
 
 // Placeholder for future Dashboard
 // Removed inline component
@@ -46,6 +49,11 @@ function App() {
           {/* Private Chat Route */}
           <Route path="/chat" element={<PrivateChat />} />
           <Route path="/chat/:userId" element={<PrivateChat />} />
+
+          {/* Social Routes */}
+          <Route path="/search" element={<SearchProfiles />} />
+          <Route path="/profile/:userId" element={<UserProfile />} />
+          <Route path="/tickets" element={<Tickets />} />
         </Route>
 
         {/* Catch all */}

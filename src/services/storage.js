@@ -135,6 +135,15 @@ export const GroupService = {
 
     groups[index].participants = groups[index].participants.filter(id => id !== currentUser.id);
     localStorage.setItem(KEYS.GROUPS, JSON.stringify(groups));
+  },
+
+  kickMember: (groupId, userId) => {
+    const groups = JSON.parse(localStorage.getItem(KEYS.GROUPS));
+    const index = groups.findIndex(g => g.id === groupId);
+    if (index === -1) throw new Error("Group not found");
+
+    groups[index].participants = groups[index].participants.filter(id => id !== userId);
+    localStorage.setItem(KEYS.GROUPS, JSON.stringify(groups));
   }
 };
 
@@ -179,13 +188,37 @@ export const ChatService = {
 };
 
 // --- SECURITY SERVICE (Simple simulation) ---
+// --- SECURITY SERVICE ---
 export const SecurityService = {
   blockUser: (userId) => {
-    // In a real app, store this. For now, just simulate success.
+    const currentUser = AuthService.getCurrentUser();
+    let blocked = JSON.parse(localStorage.getItem('koora_blocked')) || {};
+
+    if (!blocked[currentUser.id]) blocked[currentUser.id] = [];
+    if (!blocked[currentUser.id].includes(userId)) {
+      blocked[currentUser.id].push(userId);
+    }
+
+    localStorage.setItem('koora_blocked', JSON.stringify(blocked));
     console.log(`User ${userId} blocked.`);
     return true;
   },
+
+  isBlocked: (userId) => {
+    const currentUser = AuthService.getCurrentUser();
+    let blocked = JSON.parse(localStorage.getItem('koora_blocked')) || {};
+    return blocked[currentUser.id]?.includes(userId);
+  },
+
   reportUser: (userId, reason) => {
+    let reports = JSON.parse(localStorage.getItem('koora_reports')) || [];
+    reports.push({
+      reporterId: AuthService.getCurrentUser().id,
+      reportedId: userId,
+      reason,
+      date: new Date().toISOString()
+    });
+    localStorage.setItem('koora_reports', JSON.stringify(reports));
     console.log(`User ${userId} reported for: ${reason}`);
     return true;
   }
@@ -243,6 +276,17 @@ export const PostService = {
 
   getAllPosts: () => {
     return JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+  },
+
+  likePost: (postId) => {
+    const posts = JSON.parse(localStorage.getItem(KEYS.POSTS)) || [];
+    const index = posts.findIndex(p => p.id === postId);
+    if (index !== -1) {
+      posts[index].likes = (posts[index].likes || 0) + 1;
+      localStorage.setItem(KEYS.POSTS, JSON.stringify(posts));
+      return posts[index];
+    }
+    return null;
   }
 };
 
