@@ -26,6 +26,12 @@ export default function UserProfile() {
             if (curr && SecurityService.isBlocked(userId)) {
                 setIsBlocked(true);
             }
+
+            // Check friend status
+            if (curr && curr.id !== userId) {
+                const status = FriendService.getRequestStatus(curr.id, userId);
+                setFriendStatus(status);
+            }
         };
         fetchUser();
     }, [userId, navigate]);
@@ -64,19 +70,6 @@ export default function UserProfile() {
         return map[teamName] || 'ma';
     };
 
-    const checkFriendStatus = (currentId, targetId) => {
-        const friends = FriendService.getFriends(currentId);
-        if (friends.includes(targetId)) return 'friend';
-
-        const requests = FriendService.getRequests(targetId); // Check if I sent a request TO them (simplified mock check)
-        // In a real app we'd need a way to check sent requests too. 
-        // For this mock, let's just use local state or a specialized check.
-        // Actually, let's just check the "friend_requests" array directly in storage for now via a helper or assume 'none' if reloaded for simplicity, 
-        // OR better: let's verify if we can add a 'getSentRequests' to service later. 
-        // For now, let's just implement the 'Add' action which sends a persistent request.
-        return 'none';
-    };
-
     const handleAddFriend = () => {
         try {
             FriendService.sendRequest(currentUser.id, user.id);
@@ -84,6 +77,17 @@ export default function UserProfile() {
             alert('Friend request sent!');
         } catch (err) {
             alert(err.message);
+        }
+    };
+
+    const handleUnfriend = () => {
+        if (confirm(`Remove ${user.nom} from your friends?`)) {
+            try {
+                FriendService.removeFriend(currentUser.id, user.id);
+                setFriendStatus('none');
+            } catch (err) {
+                alert(err.message);
+            }
         }
     };
 
@@ -133,7 +137,7 @@ export default function UserProfile() {
                                     </Button>
                                 )}
                                 {friendStatus === 'friend' && (
-                                    <Button disabled variant="secondary" className="text-green-500 border-green-500/50">
+                                    <Button onClick={handleUnfriend} variant="secondary" className="text-green-500 border-green-500/50 hover:bg-red-900/20 hover:text-red-500 hover:border-red-500/50">
                                         <UserCheck size={18} className="mr-2" /> Friends
                                     </Button>
                                 )}

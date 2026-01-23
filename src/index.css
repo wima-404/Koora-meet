@@ -234,3 +234,51 @@ a {
     padding: 2rem;
   }
 }
+
+/* Premium Animations */
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 5px var(--accent-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  100% {
+    box-shadow: 0 0 5px var(--accent-glow);
+  }
+}
+
+.animate-glow {
+  animation: glow-pulse 3s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.premium-gradient {
+  background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
+}

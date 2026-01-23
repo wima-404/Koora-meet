@@ -438,29 +438,51 @@ export const TicketService = {
 // --- FRIEND SERVICE ---
 export const FriendService = {
   getFriends: (userId) => {
-    // Returns list of user IDs
+    // Returns list of full user objects
     const friendsMap = safeParse('koora_friends', {});
-    return friendsMap[userId] || [];
+    const friendIds = friendsMap[userId] || [];
+
+    // Enrich with user data
+    const allUsers = UserService.getAllUsers();
+    return allUsers.filter(u => friendIds.includes(u.id));
   },
 
   sendRequest: (fromId, toId) => {
     if (fromId === toId) throw new Error("Cannot add yourself");
 
+    // Check if already friends
+    const friendsMap = safeParse('koora_friends', {});
+    if (friendsMap[fromId]?.includes(toId)) {
+      throw new Error("You are already friends");
+    }
+
     let requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
-    if (requests.find(r => r.from === fromId && r.to === toId)) {
+    if (requests.find(r => r.from === fromId && r.to === toId && r.status === 'pending')) {
       throw new Error("Request already sent");
     }
 
-    requests.push({ id: Date.now(), from: fromId, to: toId, status: 'pending' });
+    // Check if there's a reverse request pending (auto-accept?) - For now just standard flow
+    if (requests.find(r => r.from === toId && r.to === fromId && r.status === 'pending')) {
+      // Auto-accept scenario could go here, but let's stick to manual for clarity
+    }
+
+    requests.push({ id: Date.now(), from: fromId, to: toId, status: 'pending', date: new Date().toISOString() });
     localStorage.setItem('koora_friend_requests', JSON.stringify(requests));
 
     // Notify receiver
-    NotificationService.notify(toId, "New Friend Request", `${fromId} sent you a request!`, "friend");
+    NotificationService.notify(toId, "New Friend Request", `Someone sent you a friend request!`, "friend");
   },
 
   getRequests: (userId) => {
     const requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
-    return requests.filter(r => r.to === userId && r.status === 'pending');
+    const myRequests = requests.filter(r => r.to === userId && r.status === 'pending');
+
+    // Enrich with sender data
+    const allUsers = UserService.getAllUsers();
+    return myRequests.map(req => {
+      const sender = allUsers.find(u => u.id === req.from);
+      return { ...req, senderName: sender ? sender.nom : 'Unknown', senderPhoto: sender ? sender.photo : null };
+    });
   },
 
   acceptRequest: (requestId) => {
@@ -486,6 +508,39 @@ export const FriendService = {
       // Notify sender
       NotificationService.notify(from, "Request Accepted", "You are now friends!", "success");
     }
+  },
+
+  refuseRequest: (requestId) => {
+    let requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
+    // We can either delete it or mark as rejected. Deleting is cleaner for "refuse".
+    // Or mark 'rejected' to prevent spam. Let's delete for simplicity so they can request again if it was a mistake.
+    const newRequests = requests.filter(r => r.id !== requestId);
+    localStorage.setItem('koora_friend_requests', JSON.stringify(newRequests));
+  },
+
+  removeFriend: (myId, friendId) => {
+    let friends = JSON.parse(localStorage.getItem('koora_friends')) || {};
+
+    if (friends[myId]) {
+      friends[myId] = friends[myId].filter(id => id !== friendId);
+    }
+    if (friends[friendId]) {
+      friends[friendId] = friends[friendId].filter(id => id !== myId);
+    }
+
+    localStorage.setItem('koora_friends', JSON.stringify(friends));
+  },
+
+  getRequestStatus: (fromId, toId) => {
+    // Helper to check status between two users
+    const requests = JSON.parse(localStorage.getItem('koora_friend_requests')) || [];
+    const req = requests.find(r => r.from === fromId && r.to === toId && r.status === 'pending');
+    if (req) return 'pending';
+
+    const friends = safeParse('koora_friends', {});
+    if (friends[fromId]?.includes(toId)) return 'friend';
+
+    return 'none';
   }
 };
 

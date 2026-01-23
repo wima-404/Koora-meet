@@ -23,6 +23,7 @@ import UserProfile from './pages/UserProfile';
 import Tickets from './pages/Tickets';
 import Predictions from './pages/Predictions';
 import Carpool from './pages/Carpool';
+import Friends from './pages/Friends';
 
 // Placeholder for future Dashboard
 // Removed inline component
@@ -40,6 +41,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
+          <Route path="/friends" element={<Friends />} />
           <Route path="/groups" element={<GroupsList />} />
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId/chat" element={<ChatRoom />} />
