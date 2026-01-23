@@ -77,17 +77,38 @@ export default function Chatbot() {
 
         if (bestMatch && maxScore > 0) {
             setTimeout(() => addBotMessage(bestMatch.response), 500);
+            // Add follow-up suggestions after main response
+            setTimeout(() => {
+                addBotMessage("💡 **You might also want to know:**", [
+                    { label: "🏨 Hotels nearby", value: "hotels" },
+                    { label: "🚕 Transportation", value: "taxi" },
+                    { label: "🎫 Ticket info", value: "tickets" },
+                    { label: "🍽️ Local food", value: "food" }
+                ]);
+            }, 1500);
             return;
         }
 
-        // 3. Fallback / Default
-        const fallbacks = [
-            "I'm learning more every day! Could you rephrase that? 🤔",
-            "Not sure about that one yet. Try asking about 'Tickets', 'Stadiums', or 'Teams'.",
-            "My scout report doesn't cover that. Ask me about World Cup 2030 cities! 🌍"
-        ];
-        setTimeout(() => addBotMessage(fallbacks[Math.floor(Math.random() * fallbacks.length)]), 500);
+        // 3. Fallback with smart suggestions
+        setTimeout(() => {
+            addBotMessage(
+                "🤔 I'm not sure about that, but I can help with:\n\n" +
+                "🏟️ **Stadiums**: \"Tell me about Camp Nou\"\n" +
+                "🏨 **Hotels**: \"Luxury hotels in Casablanca\"\n" +
+                "🚕 **Transport**: \"Taxi prices in Morocco\"\n" +
+                "⚽ **Teams**: \"Morocco team stats\"\n" +
+                "🎫 **Tickets**: \"How to buy tickets\"\n\n" +
+                "Try rephrasing your question or pick a topic!",
+                [
+                    { label: "🏟️ Stadiums", value: "stadium" },
+                    { label: "🏨 Hotels", value: "hotel" },
+                    { label: "🚕 Taxis", value: "taxi" },
+                    { label: "⚽ Teams", value: "team" }
+                ]
+            );
+        }, 500);
     };
+
 
     return (
         <div className="flex flex-col h-[calc(100vh-80px)] lg:h-[calc(100vh-2rem)] bg-[var(--bg-dark)]">

@@ -413,6 +413,60 @@ export const chatbotKb = {
             keywords: ["dress code", "what wear", "clothing"],
             response: "👔 **Dress Code**:\n\n🇲🇦 **Morocco** (conservative):\n- ✅ Shoulders/knees covered (respect)\n- ✅ Lightweight, breathable fabrics\n- ⚠️ Beaches: modest swimwear\n- ⚠️ Mosques: covered for tourists\n\n🇪🇸 🇵🇹 **Spain/Portugal**: Casual Western\n\n⚽ **Stadium**: Team jerseys welcome!\n🧢 Bring hat, sunscreen!"
         }
+    ],
+
+    // ==========================================
+    // CONVERSATIONAL AI - Greetings & Responses
+    // ==========================================
+    conversational: [
+        {
+            keywords: ["hello", "hi", "hey", "bonjour", "salut", "salam"],
+            response: "👋 Hello! I'm your World Cup 2030 assistant! I can help you with:\n\n🏟️ **Stadium information** (locations, capacity, transport)\n🏨 **Hotels** (luxury to budget options)\n🚕 **Transportation** (taxis, apps, prices)\n⚽ **Team stats** (Morocco, Spain, Portugal)\n🎫 **Tickets & practical info**\n\nWhat would you like to know?"
+        },
+        {
+            keywords: ["thank", "thanks", "merci", "shukran", "gracias", "obrigado"],
+            response: "😊 You're very welcome! Enjoy the World Cup 2030! 🏆\n\nNeed anything else? Just ask! I'm here 24/7."
+        },
+        {
+            keywords: ["help", "aide", "ayuda", "ajuda"],
+            response: "🤖 **I can help you with:**\n\n📍 **Locations**: Ask about any host city\n🏟️ **Stadiums**: Capacity, GPS, parking\n🏨 **Accommodation**: Hotels at all price points\n🚕 **Transport**: Taxis, Uber, trains\n⚽ **Teams**: Morocco, Spain, Portugal stats\n🎫 **Tickets**: Prices and how to buy\n🍽️ **Food**: Local cuisine recommendations\n📱 **SIM cards**: Tourist packages\n\n**Try asking**: \"Where is Grand Stade?\", \"Hotels in Barcelona\", \"Taxi prices Morocco\""
+        },
+        {
+            keywords: ["who are you", "what are you", "qui es-tu"],
+            response: "🤖 I'm **Koora AI**, your intelligent World Cup 2030 assistant!\n\nI have knowledge about:\n✅ All 14 host stadiums\n✅ 200+ hotels across Morocco, Spain, Portugal\n✅ Transportation in every host city\n✅ Team statistics and history\n✅ Practical travel information\n\nI'm here to make your World Cup experience unforgettable! 🏆"
+        },
+        {
+            keywords: ["bye", "goodbye", "au revoir", "adios", "tchau"],
+            response: "👋 Goodbye! Safe travels and enjoy the matches! 🏆⚽\n\n**Dima Maghreb!** 🇲🇦\n\nCome back anytime you need help!"
+        },
+        {
+            keywords: ["how are you", "comment vas-tu", "como estas"],
+            response: "😊 I'm doing great, thanks for asking! Ready to help you plan the perfect World Cup 2030 experience!\n\nWhat can I assist you with today?"
+        },
+        {
+            keywords: ["joke", "funny", "blague"],
+            response: "😄 Why don't footballers ever get hot?\n\nBecause they have so many fans! 🌬️⚽\n\nNow, what can I help you with for the World Cup?"
+        },
+        {
+            keywords: ["best team", "who will win", "winner", "champion"],
+            response: "🏆 That's the million-dollar question! The favorites include:\n\n🇲🇦 **Morocco** - Home advantage, passionate fans\n🇧🇷 **Brazil** - 5-time champions\n🇫🇷 **France** - Defending champions\n🇦🇷 **Argentina** - Current Copa América winners\n🇪🇸 **Spain** - Co-hosts, strong squad\n🇵🇹 **Portugal** - Co-hosts, experienced team\n\nBut in football, anything can happen! That's the beauty of the World Cup! ⚽✨"
+        },
+        {
+            keywords: ["recommend", "suggestion", "what should", "conseille"],
+            response: "💡 **My Top Recommendations:**\n\n1️⃣ **Book early**: Hotels fill up fast!\n2️⃣ **Use public transport**: Cheaper than taxis\n3️⃣ **Try local food**: Tagine, paella, pastéis de nata\n4️⃣ **Learn basic phrases**: Arabic, Spanish, Portuguese\n5️⃣ **Arrive 2h early**: Stadium security takes time\n6️⃣ **Download apps**: Careem (Morocco), Bolt (Portugal)\n7️⃣ **Stay hydrated**: June/July can be hot!\n\nWhat specific area would you like more details on?"
+        },
+        {
+            keywords: ["morocco", "maroc", "maghreb"],
+            response: "🇲🇦 **Morocco - The Heart of 2030!**\n\nMorocco is hosting 6 stadiums including the **Grand Stade de Casablanca** (115,000 capacity - largest in Africa!)\n\n🏟️ **Host Cities**: Casablanca, Rabat, Tangier, Marrakech, Agadir, Fès\n🌟 **Highlights**: Medinas, Sahara, Atlas Mountains\n🍽️ **Food**: Tagine, couscous, mint tea\n💰 **Currency**: Moroccan Dirham (1€ ≈ 11 DH)\n🗣️ **Languages**: Arabic, French, Berber\n\nWhat would you like to know about Morocco?"
+        },
+        {
+            keywords: ["spain", "espagne", "españa"],
+            response: "🇪🇸 **Spain - Co-Host 2030!**\n\n5 world-class stadiums including **Camp Nou** (99,000) and **Bernabéu** (81,000)!\n\n🏟️ **Host Cities**: Madrid, Barcelona, Sevilla, Bilbao\n🌟 **Highlights**: Sagrada Familia, Prado Museum, beaches\n🍽️ **Food**: Paella, tapas, jamón ibérico\n💰 **Currency**: Euro (€)\n🗣️ **Language**: Spanish (Castellano)\n\nAsk me about specific cities or stadiums!"
+        },
+        {
+            keywords: ["portugal", "portugais"],
+            response: "🇵🇹 **Portugal - Co-Host 2030!**\n\n3 iconic stadiums: **Estádio da Luz**, **Dragão**, and **Alvalade**!\n\n🏟️ **Host Cities**: Lisbon, Porto\n🌟 **Highlights**: Belém Tower, Port wine cellars, beaches\n🍽️ **Food**: Bacalhau, pastéis de nata, francesinha\n💰 **Currency**: Euro (€)\n🗣️ **Language**: Portuguese\n\nWhat would you like to explore in Portugal?"
+        }
     ]
 };
 
@@ -428,5 +482,6 @@ export const allTopics = [
     ...chatbotKb.teams,
     ...chatbotKb.history,
     ...chatbotKb.practical,
-    ...chatbotKb.fun
+    ...chatbotKb.fun,
+    ...chatbotKb.conversational
 ];
